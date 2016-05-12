@@ -198,7 +198,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
             
             时间线
           </a>
@@ -231,6 +231,359 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/12/standford-compilers/" itemprop="url">
+                  Standford Compilers （上）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-12T22:52:38+08:00" content="2016-05-12">
+              2016-05-12
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/12/standford-compilers/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/standford-compilers/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>终于上完了 <a href="https://class.coursera.org/compilers-004">Compilers</a> 这门 Standford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。</p>
+<p>先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器实在是说不过，所以就买了本<a href="https://book.douban.com/subject/25735333/">《自制编程语言》</a>上路了，书算是本好书，至少在编译器项目入门书里算是不错的了，也是<a href="http://hllvm.group.iteye.com/group/topic/39194">R大推荐</a>的一本书。但是翻了一段时间就发现了问题，总觉的作者在各个地方都浅尝辄止，而且 Lexical Analysis 和 Syntax Analysis 都是直接上的工具，所以看着不太过瘾，但是太学术的书，比如虎数、龙书之类的又看得太慢容易乏味，所以就搜了相关的公开课，最终找到了 Standford 开的这门神课，据说赞誉颇多，听完后觉得果然性价比很高，而且 <a href="https://profiles.stanford.edu/alex-aiken">Alex Aiken</a> 教授讲得异常清晰，从编译器前端词法、语法、语义分析，到后端目标代码生成、优化策略、寄存器分配，最后再到程序运行时的表现、操作语义、垃圾回收等等，既有严谨的公式推导和逻辑演化，又有通俗的例子教程和图文展示，一套完整的流程下来，真正的是醍醐灌顶，如沐春风，相见恨晚！</p>
+<p>当然了，说到底还是怪自己本科时候编译原理课打酱油，现在不得不亡羊补牢：）</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/12/standford-compilers/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/12/LL-and-LR-Parsing/" itemprop="url">
+                  LL and LR Parsing
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-12T21:56:48+08:00" content="2016-05-12">
+              2016-05-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Compiler/" itemprop="url" rel="index">
+                    <span itemprop="name">Compiler</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/12/LL-and-LR-Parsing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/LL-and-LR-Parsing/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于<a href="http://stackoverflow.com/questions/5975741/what-is-the-difference-between-ll-and-lr-parsing">LL和LR的区别</a>的文章，作者正是鼎鼎大名的Standford神课——<a href="http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/">Compilers</a>的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。</p>
+<p>问题：<strong>What is the difference between LL and LR parsing？</strong></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>大致来说，LL parsing和LR parsing的区别是，LL parser是从开始符出发，不断地尝试运用产生式于非终结符，直到推导出目标串为止；而LR parser相反，它是从目标串出发，不断地规约直到回到开始符为止。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/12/LL-and-LR-Parsing/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/12/vim-ycm/" itemprop="url">
+                  Install YCM in Vim
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-12T21:49:41+08:00" content="2016-05-12">
+              2016-05-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vim/" itemprop="url" rel="index">
+                    <span itemprop="name">Vim</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/12/vim-ycm/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/vim-ycm/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>作为vim插件中的语义智能补全终极大杀器——YCM，配置起来确实不省事。<br>这里记录下在Mac OS X环境下安装YCM并配置C系语言环境智能补全的过程。</p>
+<p>###用vundle安装YCM<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Plugin &apos;Valloric/YouCompleteMe</span><br></pre></td></tr></table></figure></p>
+<p>###下载LLVM<br>官方非常不推荐直接使用系统自带的clang来编译，所以先<br>下载<a href="http://llvm.org/releases/download.html">llvm</a>的Pre-Built Binaries版本（Clang for Mac OS X），解压到<code>~/ycm_temp</code></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/12/vim-ycm/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -322,96 +675,13 @@
 
       
         
-          
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于个人博客搭建，加上这次，算是折腾三次了，从最一开始的<a href="https://zh-cn.wordpress.com/" target="_blank" rel="external">Wordpress</a>，到<a href="https://zh-cn.wordpress.com/" target="_blank" rel="external">Ghost</a>，再到这次的<a href="https://zh-cn.wordpress.com/" target="_blank" rel="external">Hexo</a>，也算是小小见证了个人博客解决方案的的变迁历程，个人博客从程序员专属，发展到了如今能带给非专业人员极速轻量的搭建体验，技术从原来的SSHA，LAMP发展到了Node.js + NoSQL，部署从原来的需要前后端通吃，渐渐转成傻瓜式发布，而我对于新兴技术的兴奋度，却渐渐降低。</p>
-<p>关于个人博客搭建解决方案的<a href="https://www.zhihu.com/question/21981094" target="_blank" rel="external">讨论</a>实在太多了，技术好一点的，喜欢一切细节尽在掌控，对高度捆绑式博客框架服务嗤之以鼻，技术不好的，以及非专业人员，则更青睐没那么多技术细节的，简单易上手的方案。一开始自己还乐此不疲得参与进去，跟人争得面红耳赤，总是把自己的喜好吹得天花乱坠，把其他的贬得一文不值，现在想想也是脸红得不行：）。虽然我是个不折腾不舒服星人，但是享受的也仅仅是折腾的过程，折腾完了却总提不起兴致好好写一篇像样的博客，总觉得自己懂得太少，不好意思把一些东西分享出来，怕真正的高手笑话，这导致之前的博客搭起来后就搁置起灰。</p>
-<p>所以作为这次（希望是最后一次）博客迁移的第一篇文章，就写写Ghost和Hexo吧，而Wordpress因为时间太过遥远而且不符合当今极度追求轻量简便的政治正确就跳过了。这篇文章不是技术博客，不会探讨Ghost和Hexo的实现，用到的后台管理技术，从模板到静态文件的渲染方式等，这些在他们的官网上都有非常详细开发文档，再加上自己也没有仔细扒过源码，所以就不献丑了。这篇文章最主要说说我为什么要从Ghost迁到Hexo，以及用精简的步骤记录下部署过程方便查阅。</p>
-<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>先来说Hexo，因为这是个很轻量级的博客框架，我在折腾完Ghost后，博客很长一段时间就闲置了，现在想想并不是忙到没时间写博客，而是没水平把一些想法组织成一篇通体流畅的精致文章，所以确实需要常写常练常看，这篇小白文章就当热手了，后面准备把 Compiler 和 DS &amp; Algorithms 的一些技术文章写好。</p>
-<p>说会Hexo，先说下我知道Jekyll/Hexo还是在Ghost之前，但是当时正值折腾病高峰期，就没有重视这类静态托管类型的博客框架。后来自己通过搭Ghost把前后端都走了一遍后，反而对自己的服务器产生一种不信任感，难以形容这种感觉，再加上Ghost的线上Markdown支持不是特别好，所以就萌生了托管到Github的想法。</p>
-<p>Hexo的安装与Ghost差不多，因为都是基于Node.js的，所以直接用npm安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<p>然后在任意位置新建自己的博客目录，例如 <code>$HOME/hexo</code> ，然后用hexo初始化目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cd $HOME/hexo</span><br><span class="line">$ hexo init</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
-<p>目录初始化完后，hexo会生成一系列文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">_config.yml   </span><br><span class="line">node_modules </span><br><span class="line">package.json       </span><br><span class="line">scaffolds    </span><br><span class="line">source       </span><br><span class="line">themes</span><br></pre></td></tr></table></figure>
-<p>其中 <code>_config.yml</code> 是配置文件，<code>scaffolds</code> 目录下是模板，<code>source</code> 目录下是博客和一些依赖文件，<code>themes</code> 是主题目录。</p>
-<p>可以启动hexo服务器在本地浏览器中看下他的欢迎页面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://0.0.0.0:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure>
-<p>接下来就是讲hexo托管到Github了，首先在 <code>_config.yml</code> 修改如下字段：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/your_account/your_account.github.io.git </span><br><span class="line">  # your_account是你的Github用户名</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<p>然后安装hexo的Github依赖：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-<p>发布博客：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g -d</span><br></pre></td></tr></table></figure>
-<p>若要绑定域名的话，需要在 <code>source/CNAME</code> （若没有就手动新建）中添加：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">www.yours.com</span><br></pre></td></tr></table></figure>
-<p>然后到自己的域名提供商处添加解析。</p>
-<p>到这里hexo的部署就结束了，<a href="https://hexo.io/docs/" target="_blank" rel="external">官网</a>有更详细的教程，使用文档和主题市场。</p>
-<h2 id="Ghost"><a href="#Ghost" class="headerlink" title="Ghost"></a>Ghost</h2><h4 id="相关介绍"><a href="#相关介绍" class="headerlink" title="相关介绍"></a>相关介绍</h4><p>Ghost 是基于 Node.js 的开源博客平台，由前 WordPress UI 部门主管 John O’Nolan 和 WordPress 高级工程师 Hannah Wolfe 创立，所以Ghost和Wordpress还是有点血缘关系的，Ghost于2013年发布，由于上了Node.js这趟车，所以在开源社区还是引起不小的反响的，反正我当时看到她时是欣喜不已，终于可以放弃Wordpress这个沉重的家伙了。</p>
-<p>相比Wordpress，Ghost的优点确实不少：</p>
-<ul>
-<li>基于最近很火的Node.js，容易吸引开源社区的贡献</li>
-<li>架构简单，执行效率高，渲染快</li>
-<li>安装简单，部署容易</li>
-<li>使用方便，用Markdown在线写作发布</li>
-<li>可以使用自带的sqlite3</li>
-</ul>
-<p>当然，目前来看，缺点也是挺明显的：</p>
-<ul>
-<li>技术太新，带来不稳定性</li>
-<li>对移动端支持不好</li>
-<li>对中文编码支持不好（不过有<a href="http://www.ghostchina.com/" target="_blank" rel="external">中文社区</a>提供支持）</li>
-<li>Markdown 支持不好，一些语法失效</li>
-<li>云端存储支持不好</li>
-</ul>
-<p>所以，个人感觉 Ghost 是介于 Wordpress 这种重量级产品，和Jekyll/Hexo这些静态博客产品之间的一种解决方案，对于一些想体验从服务器搭建到博客部署一套完整流程，但是又不想深入到太多细节的人来说，Ghost 是一个极好的选择。</p>
-<h4 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h4><p>国内国外的云服务器供应商不少，这里就不过多介绍了，我选的是<a href="https://www.aliyun.com/" target="_blank" rel="external">阿里云ECS</a>，没啥特殊理由，就因为他当时有个大学生计划，打折：）至于服务器的配置，硬件流量啥的没啥好说的，看个人所需了，系统推荐 CentOS ，如果不熟悉，可以看阿里自己人写的<a href="https://book.douban.com/subject/25918029/" target="_blank" rel="external">《Linux就是这个范儿》</a>，非常实用的一本 Linux 入门书，个人感觉比鸟哥的那本Linux更适合我：）。</p>
-<p>对了，这里说下，国内的站点管理越来越严格了，还记得以前云服务器是不需要备案就能直接搭域名的，现在貌似不行了，需要备案，不过都可以<a href="https://beian.aliyun.com/?spm=5176.2020520137.103.3.KqJ10C" target="_blank" rel="external">在线完成</a>，相当简单，就连拍照都可以自己拍完上传。域名当然也需要备案，推荐到万网买。服务器域名到手后，可以好好把玩了，有事没事就ssh上去一阵折腾。</p>
-<h4 id="Ghost搭建"><a href="#Ghost搭建" class="headerlink" title="Ghost搭建"></a>Ghost搭建</h4><p>首先，这里强烈推荐<a href="http://www.ghostchina.com/" target="_blank" rel="external">Ghost中文社区</a>，因为 Ghost 原版对中文编码支持得不是很好，所以推荐到中文社区下载中文集成版 Ghost，能省很多事。中文社区上也有比较详细的搭建教程和使用手册，我这里的是Ghost + Nginx + MySQL 版，可以确保能成功搭建在Mac OS X 10.11 和 CentOS 6.5 上。</p>
-<p>下面是在 CentOS 6.5 上搭建 Ghost 0.7.4 的过程：</p>
-<h5 id="Node-js-安装"><a href="#Node-js-安装" class="headerlink" title="Node.js 安装"></a>Node.js 安装</h5><p>Ghost 目前支持的Node.js版本是 v 0.10.x 或者 4.2.x，可以在官网<a href="https://nodejs.org/en/download/releases/" target="_blank" rel="external">这里</a>找到相应的版本下载，当然也可以用Mac上的brew或CentOS上的yum安装相应的Node.js版本。</p>
-<h5 id="Ghost-安装"><a href="#Ghost-安装" class="headerlink" title="Ghost 安装"></a>Ghost 安装</h5><p>到中文社区<a href="http://www.ghostchina.com/download/" target="_blank" rel="external">这里</a>找最新的Ghost中文集成版下载，可以省去很多后面兼容中文的麻烦。将压缩包解压到任意目录，例如 <code>$HOME/ghost</code>，然后进入目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd $HOME/ghost</span><br></pre></td></tr></table></figure>
-<p>用npm安装Ghost：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install --production</span><br></pre></td></tr></table></figure>
-<p>安装成功后想看下Ghost效果，执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm start</span><br></pre></td></tr></table></figure>
-<p>以debug模式启动Ghost，然后就可以在浏览器中访问 <code>127.0.0.1:2368</code> 看到Ghost的欢迎页面了，也可以进入后台管理页面 <code>127.0.0.1:2368/ghost</code>。</p>
-<p>不过这只是演示用，我们需要更专业的反向代理服务器，以及更稳定可靠的数据库，我选择的是Nginx和MySQL。</p>
-<h5 id="Nginx-安装"><a href="#Nginx-安装" class="headerlink" title="Nginx 安装"></a>Nginx 安装</h5><p>Nginx的教程太多了，这里只记录最有效的配置，直接用 yum 安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install nginx -y</span><br></pre></td></tr></table></figure>
-<p>运行Nginx以及设置开机自启动：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ service nginx start</span><br><span class="line">$ chkconfig nginx on</span><br></pre></td></tr></table></figure>
-<p>然后就可以在浏览器中看到Nginx的欢迎页面了。</p>
-<p>接下来配置Nginx，使它能代理我们的Ghost端口，并配置域名：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd /etc/nginx/conf.d</span><br><span class="line">$ cp default.conf ghost.conf</span><br></pre></td></tr></table></figure>
-<p>打开 <code>ghost.conf</code> 修改如下配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">server &#123; </span><br><span class="line">	listen 80; </span><br><span class="line">	server_name www.yours.com; </span><br><span class="line">	location / &#123; </span><br><span class="line">		proxy_set_header X-Real-IP $remote_addr; </span><br><span class="line">		proxy_set_header Host $http_host; </span><br><span class="line">		proxy_pass http://127.0.0.1:2368; </span><br><span class="line">		proxy_set_header REMOTE-HOST $remote_addr; </span><br><span class="line">		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; </span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>最主要的就是 <code>server_name</code> 和 <code>proxy_pass</code> ，用来绑定域名。修改完后重启Nginx：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ service nginx restart</span><br></pre></td></tr></table></figure>
-<h5 id="MySQL-安装"><a href="#MySQL-安装" class="headerlink" title="MySQL 安装"></a>MySQL 安装</h5><p>跟Nginx的安装流程差不多，也是先安装再启动：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yum install mysql mysql-server</span><br><span class="line">$ service mysqld start</span><br><span class="line">$ chkconfig mysqld on</span><br></pre></td></tr></table></figure>
-<p>然后是一些配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ mysql_secure_installation</span><br><span class="line">Set root password? [Y/n] //设置root密码 -- 根据个人需求 </span><br><span class="line">anonymous users? [Y/n] //删除匿名用户 -- y </span><br><span class="line">Disallow root login remotely? [Y/n] //禁止root用户远程登录 --n </span><br><span class="line">Remove test database and access to it? [Y/n] //删除默认的 test 数据库 --y </span><br><span class="line">Reload privilege tables now? [Y/n] //是否马上应用最新的设置 --y</span><br></pre></td></tr></table></figure>
-<p>为了让MySQL支持中文，还需要修改下字符集，打开 <code>/etc/my.cnf</code> ，修改：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[client] </span><br><span class="line">default-character-set=utf8 </span><br><span class="line">[mysql] </span><br><span class="line">default-character-set=utf8 </span><br><span class="line">[mysqld] </span><br><span class="line">character-set-server=utf8 </span><br><span class="line">collation-server=utf8_general_ci</span><br></pre></td></tr></table></figure>
-<p>最后建立一个Ghost专用的用户和database：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ mysql -u root</span><br><span class="line">mysql&gt; create database ghost;</span><br><span class="line">	// 建立名为ghost的数据库</span><br><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON ghost.* To &apos;ghost&apos;@&apos;%&apos; IDENTIFIED BY &apos;password&apos;;</span><br><span class="line">	// 创建ghost用户，和密码</span><br></pre></td></tr></table></figure>
-<h5 id="Ghost-配置"><a href="#Ghost-配置" class="headerlink" title="Ghost 配置"></a>Ghost 配置</h5><p>首先拷贝配置文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp config.example.js config.js</span><br></pre></td></tr></table></figure>
-<p>主要修改 <code>config.js</code> 中的以下字段：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">production: &#123;</span><br><span class="line">    url: <span class="string">'http://www.yours.com'</span>,</span><br><span class="line">    mail: &#123;&#125;,</span><br><span class="line">    database: &#123;</span><br><span class="line">        client: <span class="string">'mysql'</span>,</span><br><span class="line">        connection: &#123;</span><br><span class="line">            host: <span class="string">'127.0.0.1'</span>,</span><br><span class="line">            user: <span class="string">'ghost'</span>,</span><br><span class="line">            password: <span class="string">''</span>,</span><br><span class="line">            database:<span class="string">'ghost'</span>,</span><br><span class="line">            charset:<span class="string">'utf8'</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        debug: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
-<p>这里的 <code>url</code> 要与Nginx配置中的 <code>server_name</code> 一致，用来绑定域名，数据库配置与上面MySQL的相关配置一致。</p>
-<p>这次让我们以 production 模式启动Ghost来看下效果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm start --production</span><br></pre></td></tr></table></figure>
-<p>Ghost的自定义主要体现在主题定制上，这里是留给用户自由发挥的地方，官方也提供了<a href="http://marketplace.ghost.org/" target="_blank" rel="external">主题市场</a>，收集了不少优质的主题，有付费的也有免费的，要换主题的话，在主目录下有个 <code>content/theme</code> 目录，只需要将下载主题放到这个目录下，然后在后台就能看到并替换，非常方便。个人推荐fork一些免费开源的主题，然后在别人的主题上加入自己的设计，这样能更深入了解Ghost的一些设计思想。</p>
-<h5 id="forever-启动"><a href="#forever-启动" class="headerlink" title="forever 启动"></a>forever 启动</h5><p>这是最后一步了，为了不让 npm 进程在 ssh 断掉时被系统 kill 掉，我们用一个 npm 插件 forever 来帮我们管理，安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g forever</span><br></pre></td></tr></table></figure>
-<p>以 production 模式启动我们的ghost：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ NODE_ENV=production forever start index.js</span><br></pre></td></tr></table></figure>
-<p>所有产生的访问日志都在 <code>$HOME/.forever</code> 目录下。其他forever命令可以直接看帮助。</p>
-
-          
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于个人博客搭建，加上这次，算是折腾三次了，从最一开始的<a href="https://zh-cn.wordpress.com/">Wordpress</a>，到<a href="https://zh-cn.wordpress.com/">Ghost</a>，再到这次的<a href="https://zh-cn.wordpress.com/">Hexo</a>，也算是小小见证了个人博客解决方案的的变迁历程，个人博客从程序员专属，发展到了如今能带给非专业人员极速轻量的搭建体验，技术从原来的SSHA，LAMP发展到了Node.js + NoSQL，部署从原来的需要前后端通吃，渐渐转成傻瓜式发布，而我对于新兴技术的兴奋度，却渐渐降低。</p>
+<p>关于个人博客搭建解决方案的<a href="https://www.zhihu.com/question/21981094">讨论</a>实在太多了，技术好一点的，喜欢一切尽在掌控，对高度捆绑式博客框架嗤之以鼻，技术不好的，以及非专业人员，则更青睐没那么多技术细节，简单易上手的方案。一开始自己还乐此不疲得参与进去，跟人争得面红耳赤，总是把自己的喜好吹得天花乱坠，把其他的贬得一文不值，现在想想也是脸红得不行：）。虽然我是个不折腾不舒服星人，但是享受的也仅仅是折腾的过程，折腾完了却总提不起兴致好好写一篇像样的博客，总觉得自己懂得太少，不好意思把一些东西分享出来，怕真正的高手笑话，这导致之前的博客搭起来后就搁置起灰。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/11/from-ghost-to-hexo/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -479,7 +749,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -487,7 +757,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

@@ -1,0 +1,680 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT, Uncharted" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于LL和LR的区别的文章，作者正是鼎鼎大名的Standford神课——Compilers的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。
+问题：What is the difference between LL and LR parsing？
+正文大致来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LL and LR Parsing">
+<meta property="og:url" content="http://www.shinexu.com/2016/05/12/LL-and-LR-Parsing/index.html">
+<meta property="og:site_name" content="Uncharted">
+<meta property="og:description" content="前言这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于LL和LR的区别的文章，作者正是鼎鼎大名的Standford神课——Compilers的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。
+问题：What is the difference between LL and LR parsing？
+正文大致来">
+<meta property="og:updated_time" content="2016-05-12T14:50:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LL and LR Parsing">
+<meta name="twitter:description" content="前言这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于LL和LR的区别的文章，作者正是鼎鼎大名的Standford神课——Compilers的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。
+问题：What is the difference between LL and LR parsing？
+正文大致来">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> LL and LR Parsing | Uncharted </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?432cbae24e55ea84ed21701ccfd6bbd4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Uncharted</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间线
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                LL and LR Parsing
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-12T21:56:48+08:00" content="2016-05-12">
+              2016-05-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Compiler/" itemprop="url" rel="index">
+                    <span itemprop="name">Compiler</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/12/LL-and-LR-Parsing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/LL-and-LR-Parsing/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于<a href="http://stackoverflow.com/questions/5975741/what-is-the-difference-between-ll-and-lr-parsing" target="_blank" rel="external">LL和LR的区别</a>的文章，作者正是鼎鼎大名的Standford神课——<a href="http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/" target="_blank" rel="external">Compilers</a>的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。</p>
+<p>问题：<strong>What is the difference between LL and LR parsing？</strong></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>大致来说，LL parsing和LR parsing的区别是，LL parser是从开始符出发，不断地尝试运用产生式于非终结符，直到推导出目标串为止；而LR parser相反，它是从目标串出发，不断地规约直到回到开始符为止。</p>
+<a id="more"></a>
+<p>具体而言，LL parsing是<strong>left-to-right, leftmost derivation, 从左往右，最左推导</strong>（名字的由来），意思就是我们要从左往右扫描输入串来尝试构造一个最左推导，我们从开始符出发，不断地扩展最左边的非终结符（即用它右边的产生式来替换它），直到我们推出了输入串为止。LR parsing是<strong>left-to-right, rightmost derivation, 从左往右，最右推导</strong>（名字的由来），这意味着我们需要从左往右扫描，并试图构造一个最右推导，我们不断地把当前已扫描的串的某个子串拿出来，规约为一个非终结符，直到只剩下开始符为止。</p>
+<p>而很多时候文法的规则中一个非终结符的产生式会有多个，这个时候的推导需要提前向后看几个token，以帮助parser做出很好的决策，到底应该使用哪个产生式，这个<strong>几个</strong>，就是LL(*)或LR(*)中的*。</p>
+<p>下面结合具体实例来加以说明。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>给出文法规则如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">S —&gt; E</span><br><span class="line">E —&gt; T + E</span><br><span class="line">E —&gt; T</span><br><span class="line">T —&gt; int</span><br></pre></td></tr></table></figure>
+<p>给出的输入串为<code>int + int + int</code>。</p>
+<p>下面我们分别用LL和LR parsing来解析。</p>
+<h3 id="LL-parsing"><a href="#LL-parsing" class="headerlink" title="LL parsing"></a>LL parsing</h3><p>在LL parsing的过程中，parser的每一步只能从以下两个动作中选择一个执行：</p>
+<ol>
+<li><strong>预测（Predict）</strong>：找到最左边的非终结符，并向后看<strong>几个（LL(*)）</strong>tokens，然后从该非终结符右边的产生式中选出一个最优的产生式来替换这个非终结符，使得整个式子更接近输入串。</li>
+<li><strong>匹配（Match）</strong>：在当前的式子中，将最左边的终结符（预测出的）与输入串最左边的还没有被处理的token进行比较。</li>
+</ol>
+<p>对于上面的例子，一个LL(2) parser的解析过程如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Production       Input              Action</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">S                int + int + int    Predict S -&gt; E</span><br><span class="line">E                int + int + int    Predict E -&gt; T + E</span><br><span class="line">T + E            int + int + int    Predict T -&gt; int</span><br><span class="line">int + E          int + int + int    Match int</span><br><span class="line">+ E              + int + int        Match +</span><br><span class="line">E                int + int          Predict E -&gt; T + E</span><br><span class="line">T + E            int + int          Predict T -&gt; int</span><br><span class="line">int + E          int + int          Match int</span><br><span class="line">+ E              + int              Match +</span><br><span class="line">E                int                Predict E -&gt; T</span><br><span class="line">T                int                Predict T -&gt; int</span><br><span class="line">int              int                Match int</span><br><span class="line">                                    Accept</span><br></pre></td></tr></table></figure>
+<p>其中值得注意的是，LL parsing的每一步，我们看的都是最左边的符号，如果它是一个终结符，我们就执行匹配动作，如果匹配，输入串最左边的token就被处理掉了，否则直接拒绝；如果它是一个非终结符，我们就执行预测动作，在该非终结符右边的产生式中选择一个进行替换。</p>
+<h3 id="LR-parsing"><a href="#LR-parsing" class="headerlink" title="LR parsing"></a>LR parsing</h3><p>在LR parsing中，依然也只有两种动作：</p>
+<ol>
+<li><p><strong>移位（Shift）</strong>：将输入串的下一个token拿过来，加到当前正在处理的buffer中。</p>
+</li>
+<li><p><strong>规约（Reduce）</strong>：从buffer中，选择最右边的一组符号（非终结符和终结符都可以），运用规则将他们规约成一个非终结符。</p>
+</li>
+</ol>
+<p>对于上面的例子，LR(1) parser的解析过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Workspace        Input              Action</span><br><span class="line">---------------------------------------------------------</span><br><span class="line">                 int + int + int    Shift</span><br><span class="line">int              + int + int        Reduce T -&gt; int</span><br><span class="line">T                + int + int        Shift</span><br><span class="line">T +              int + int          Shift</span><br><span class="line">T + int          + int              Reduce T -&gt; int</span><br><span class="line">T + T            + int              Shift</span><br><span class="line">T + T +          int                Shift</span><br><span class="line">T + T + int                         Reduce T -&gt; int</span><br><span class="line">T + T + T                           Reduce E -&gt; T</span><br><span class="line">T + T + E                           Reduce E -&gt; T + E</span><br><span class="line">T + E                               Reduce E -&gt; T + E</span><br><span class="line">E                                   Reduce S -&gt; E</span><br><span class="line">S                                   Accept</span><br></pre></td></tr></table></figure>
+<p>可以看出，LR 的解析是一个不断规约的过程，目的就是要在读完所有输入token之后，能够将式子规约到开始符。</p>
+<h3 id="LL和LR的比较"><a href="#LL和LR的比较" class="headerlink" title="LL和LR的比较"></a>LL和LR的比较</h3><p>LL和LR这两种parsing算法各有各的特点，概括说来有以下几点：</p>
+<ol>
+<li>LL parsing实现起来比较容易，或者时候LL算法相比LR算法来说更简单。</li>
+<li>LR parsing的功能比LL更强大，这也是导致其算法更复杂的原因，特别是LR算法的诸多变种，例如LR(0), SLR(1), LALR(1), LR(1), IELR(1), GLR(0)，其中最出名的，也是工业界用的比较多的就是LALR(1)算法。</li>
+<li>就通用性来说，LL parsing算法存在两个个致命的问题，就是<strong>公共左因子</strong>和<strong>左递归</strong>问题，这两个问题给LL parser的实现带来了困难，当然也有相当多的技术来解决他们。</li>
+</ol>
+<p>好了，LL和LR parsing的区别就介绍到这里，想对parsing了解更多的话，非常推荐Stanford的Compilers神课，性价比很高。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/12/vim-ycm/" rel="next" title="Install YCM in Vim">
+                <i class="fa fa-chevron-left"></i> Install YCM in Vim
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/12/standford-compilers/" rel="prev" title="Standford Compilers （上）">
+                Standford Compilers （上） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Shine Xu" />
+          <p class="site-author-name" itemprop="name">Shine Xu</p>
+          <p class="site-description motion-element" itemprop="description">Make my life</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vesion" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://cn.linkedin.com/in/xiang-xu-a18807a2" target="_blank" title="Linkedin">
+                  
+                    <i class="fa fa-fw fa-linkedin-square"></i>
+                  
+                  Linkedin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-number">2.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LL-parsing"><span class="nav-number">2.2.</span> <span class="nav-text">LL parsing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LR-parsing"><span class="nav-number">2.3.</span> <span class="nav-text">LR parsing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LL和LR的比较"><span class="nav-number">2.4.</span> <span class="nav-text">LL和LR的比较</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shine Xu</span>
+</div>
+
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'shinexu';
+      var disqus_identifier = '2016/05/12/LL-and-LR-Parsing/';
+      var disqus_title = 'LL and LR Parsing';
+      var disqus_url = 'http://www.shinexu.com/2016/05/12/LL-and-LR-Parsing/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
