@@ -55,7 +55,7 @@
   
     
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=PingFang SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -85,21 +85,18 @@
 
 
 <meta name="description" content="前言这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于LL和LR的区别的文章，作者正是鼎鼎大名的Standford神课——Compilers的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。
-问题：What is the difference between LL and LR parsing？
-正文大致来">
+问题：What is the difference between LL and LR parsing？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LL and LR Parsing">
-<meta property="og:url" content="http://www.shinexu.com/2016/05/12/LL-and-LR-Parsing/index.html">
+<meta property="og:url" content="http://www.shinexu.com/2016/04/06/LL-and-LR-Parsing/index.html">
 <meta property="og:site_name" content="Uncharted">
 <meta property="og:description" content="前言这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于LL和LR的区别的文章，作者正是鼎鼎大名的Standford神课——Compilers的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。
-问题：What is the difference between LL and LR parsing？
-正文大致来">
-<meta property="og:updated_time" content="2016-05-12T14:50:11.000Z">
+问题：What is the difference between LL and LR parsing？">
+<meta property="og:updated_time" content="2016-05-13T08:42:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LL and LR Parsing">
 <meta name="twitter:description" content="前言这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于LL和LR的区别的文章，作者正是鼎鼎大名的Standford神课——Compilers的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。
-问题：What is the difference between LL and LR parsing？
-正文大致来">
+问题：What is the difference between LL and LR parsing？">
 
 
 
@@ -269,8 +266,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-12T21:56:48+08:00" content="2016-05-12">
-              2016-05-12
+            <time itemprop="dateCreated" datetime="2016-04-06T21:56:48+08:00" content="2016-04-06">
+              2016-04-06
             </time>
           </span>
 
@@ -299,8 +296,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/12/LL-and-LR-Parsing/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/LL-and-LR-Parsing/" itemprop="commentsCount"></span>
+                <a href="/2016/04/06/LL-and-LR-Parsing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/04/06/LL-and-LR-Parsing/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -325,8 +322,8 @@
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇是介绍 Parser 中最最主要的两种 grammar 或 parsing 之间的差异，问题来自 SO 上的关于<a href="http://stackoverflow.com/questions/5975741/what-is-the-difference-between-ll-and-lr-parsing" target="_blank" rel="external">LL和LR的区别</a>的文章，作者正是鼎鼎大名的Standford神课——<a href="http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/" target="_blank" rel="external">Compilers</a>的任课老师，他对于这个问题的回答非常精彩，所以翻译过来并加上了一些个人理解。</p>
 <p>问题：<strong>What is the difference between LL and LR parsing？</strong></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>大致来说，LL parsing和LR parsing的区别是，LL parser是从开始符出发，不断地尝试运用产生式于非终结符，直到推导出目标串为止；而LR parser相反，它是从目标串出发，不断地规约直到回到开始符为止。</p>
 <a id="more"></a>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>大致来说，LL parsing和LR parsing的区别是，LL parser是从开始符出发，不断地尝试运用产生式于非终结符，直到推导出目标串为止；而LR parser相反，它是从目标串出发，不断地规约直到回到开始符为止。</p>
 <p>具体而言，LL parsing是<strong>left-to-right, leftmost derivation, 从左往右，最左推导</strong>（名字的由来），意思就是我们要从左往右扫描输入串来尝试构造一个最左推导，我们从开始符出发，不断地扩展最左边的非终结符（即用它右边的产生式来替换它），直到我们推出了输入串为止。LR parsing是<strong>left-to-right, rightmost derivation, 从左往右，最右推导</strong>（名字的由来），这意味着我们需要从左往右扫描，并试图构造一个最右推导，我们不断地把当前已扫描的串的某个子串拿出来，规约为一个非终结符，直到只剩下开始符为止。</p>
 <p>而很多时候文法的规则中一个非终结符的产生式会有多个，这个时候的推导需要提前向后看几个token，以帮助parser做出很好的决策，到底应该使用哪个产生式，这个<strong>几个</strong>，就是LL(*)或LR(*)中的*。</p>
 <p>下面结合具体实例来加以说明。</p>
@@ -383,7 +380,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/12/vim-ycm/" rel="next" title="Install YCM in Vim">
+              <a href="/2015/12/12/vim-ycm/" rel="next" title="Install YCM in Vim">
                 <i class="fa fa-chevron-left"></i> Install YCM in Vim
               </a>
             
@@ -647,9 +644,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'shinexu';
-      var disqus_identifier = '2016/05/12/LL-and-LR-Parsing/';
+      var disqus_identifier = '2016/04/06/LL-and-LR-Parsing/';
       var disqus_title = 'LL and LR Parsing';
-      var disqus_url = 'http://www.shinexu.com/2016/05/12/LL-and-LR-Parsing/';
+      var disqus_url = 'http://www.shinexu.com/2016/04/06/LL-and-LR-Parsing/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
