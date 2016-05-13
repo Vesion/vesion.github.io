@@ -253,8 +253,130 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/12/standford-compilers/" itemprop="url">
-                  Standford Compilers （上）
+                <a class="post-title-link" href="/2016/05/13/Stanford-Compilers-Notes/" itemprop="url">
+                  Stanford Compilers （下）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-13T14:57:55+08:00" content="2016-05-13">
+              2016-05-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Compiler/" itemprop="url" rel="index">
+                    <span itemprop="name">Compiler</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/13/Stanford-Compilers-Notes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/13/Stanford-Compilers-Notes/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>这篇是我上 <a href="https://class.coursera.org/compilers-004">Compilers</a> 的全课程笔记，用英文记录，以防一些术语在翻译的时候出现歧义，或者没法翻译，基本记录了整门课程的全部要点，也涵盖了编译器的基本原理，几乎没有公式和定理证明，强烈建议配合 <a href="https://class.coursera.org/compilers-004/lecture">lectures</a> 阅读。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/13/Stanford-Compilers-Notes/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/12/Stanford-Compilers-Thoughts/" itemprop="url">
+                  Stanford Compilers （上）
                 </a>
               
             
@@ -297,8 +419,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/12/standford-compilers/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/standford-compilers/" itemprop="commentsCount"></span>
+                <a href="/2016/05/12/Stanford-Compilers-Thoughts/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/Stanford-Compilers-Thoughts/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -322,11 +444,11 @@
 
       
         
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>终于上完了 <a href="https://class.coursera.org/compilers-004">Compilers</a> 这门 Standford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。</p>
-<p>先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器实在是说不过，所以就买了本<a href="https://book.douban.com/subject/25735333/">《自制编程语言》</a>上路了，书算是本好书，至少在编译器项目入门书里算是不错的了，也是<a href="http://hllvm.group.iteye.com/group/topic/39194">R大推荐</a>的一本书。但是翻了一段时间就发现了问题，总觉的作者在各个地方都浅尝辄止，而且 Lexical Analysis 和 Syntax Analysis 都是直接上的工具，所以看着不太过瘾，但是太学术的书，比如虎数、龙书之类的又看得太慢容易乏味，所以就搜了相关的公开课，最终找到了 Standford 开的这门神课，据说赞誉颇多，听完后觉得果然性价比很高，而且 <a href="https://profiles.stanford.edu/alex-aiken">Alex Aiken</a> 教授讲得异常清晰，从编译器前端词法、语法、语义分析，到后端目标代码生成、优化策略、寄存器分配，最后再到程序运行时的表现、操作语义、垃圾回收等等，既有严谨的公式推导和逻辑演化，又有通俗的例子教程和图文展示，一套完整的流程下来，真正的是醍醐灌顶，如沐春风，相见恨晚！</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>终于上完了 <a href="https://class.coursera.org/compilers-004">Compilers</a> 这门 Stanford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。</p>
+<p>先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器实在是说不过，所以就买了本<a href="https://book.douban.com/subject/25735333/">《自制编程语言》</a>上路了，书算是本好书，至少在编译器项目入门书里算是不错的了，也是<a href="http://hllvm.group.iteye.com/group/topic/39194">R大推荐</a>的一本书。但是翻了一段时间就发现了问题，总觉的作者在各个地方都浅尝辄止，而且 Lexical Analysis 和 Syntax Analysis 都是直接上的工具，所以看着不太过瘾，但是太学术的书，比如虎数、龙书之类的又看得太慢容易乏味，所以就搜了相关的公开课，最终找到了 Stanford 开的这门神课，据说赞誉颇多，听完后觉得果然性价比很高，而且 <a href="https://profiles.stanford.edu/alex-aiken">Alex Aiken</a> 教授讲得异常清晰，从编译器前端词法、语法、语义分析，到后端目标代码生成、优化策略、寄存器分配，最后再到程序运行时的表现、操作语义、垃圾回收等等，既有严谨的公式推导和逻辑演化，又有通俗的例子教程和图文展示，一套完整的流程下来，真正的是醍醐灌顶，如沐春风，相见恨晚！</p>
 <p>当然了，说到底还是怪自己本科时候编译原理课打酱油，现在不得不亡羊补牢：）</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/12/standford-compilers/" rel="contents">
+            <a class="btn" href="/2016/05/12/Stanford-Compilers-Thoughts/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -768,7 +890,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

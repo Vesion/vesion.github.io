@@ -1,0 +1,1106 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT, Uncharted" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="这篇是我上 Compilers 的全课程笔记，用英文记录，以防一些术语在翻译的时候出现歧义，或者没法翻译，基本记录了整门课程的全部要点，也涵盖了编译器的基本原理，几乎没有公式和定理证明，强烈建议配合 lectures 阅读。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stanford Compilers （下）">
+<meta property="og:url" content="http://www.shinexu.com/2016/05/13/Stanford-Compilers-Notes/index.html">
+<meta property="og:site_name" content="Uncharted">
+<meta property="og:description" content="这篇是我上 Compilers 的全课程笔记，用英文记录，以防一些术语在翻译的时候出现歧义，或者没法翻译，基本记录了整门课程的全部要点，也涵盖了编译器的基本原理，几乎没有公式和定理证明，强烈建议配合 lectures 阅读。">
+<meta property="og:updated_time" content="2016-05-13T08:26:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Stanford Compilers （下）">
+<meta name="twitter:description" content="这篇是我上 Compilers 的全课程笔记，用英文记录，以防一些术语在翻译的时候出现歧义，或者没法翻译，基本记录了整门课程的全部要点，也涵盖了编译器的基本原理，几乎没有公式和定理证明，强烈建议配合 lectures 阅读。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Stanford Compilers （下） | Uncharted </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?432cbae24e55ea84ed21701ccfd6bbd4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Uncharted</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间线
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Stanford Compilers （下）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-13T14:57:55+08:00" content="2016-05-13">
+              2016-05-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Compiler/" itemprop="url" rel="index">
+                    <span itemprop="name">Compiler</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/13/Stanford-Compilers-Notes/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/13/Stanford-Compilers-Notes/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇是我上 <a href="https://class.coursera.org/compilers-004" target="_blank" rel="external">Compilers</a> 的全课程笔记，用英文记录，以防一些术语在翻译的时候出现歧义，或者没法翻译，基本记录了整门课程的全部要点，也涵盖了编译器的基本原理，几乎没有公式和定理证明，强烈建议配合 <a href="https://class.coursera.org/compilers-004/lecture" target="_blank" rel="external">lectures</a> 阅读。</p>
+<a id="more"></a>
+<h2 id="Lexical-Analysis"><a href="#Lexical-Analysis" class="headerlink" title="Lexical Analysis"></a>Lexical Analysis</h2><h4 id="Regular-Expression"><a href="#Regular-Expression" class="headerlink" title="Regular Expression"></a>Regular Expression</h4><p>Notations of regular expressions:</p>
+<ul>
+<li>At least one : A+     =     AA*</li>
+<li>Union : A | B     =     A + B</li>
+<li>Optional : A?     =     A + epsilon</li>
+<li>Range : ‘a’ + ‘b’ + … + ‘z’     =     [a-z]</li>
+<li>Excluded range : [^a-z]</li>
+</ul>
+<p>Lexical specification needs small extensions:</p>
+<ul>
+<li>To resolve ambiguities: <ul>
+<li>matches as long as possible (greedy)</li>
+<li>highest priority match</li>
+</ul>
+</li>
+<li>To handle errors: Give a regular expression which can catch all invalid inputs, with the lowest priority.</li>
+</ul>
+<p>Regular expressions = Specification</p>
+<p>Finite automata = implementation</p>
+<h4 id="Finite-Automata"><a href="#Finite-Automata" class="headerlink" title="Finite Automata"></a>Finite Automata</h4><p>Consists of:</p>
+<ul>
+<li>An input alphabet</li>
+<li>A set of states</li>
+<li>A start state</li>
+<li>A set of accepting states</li>
+<li>A set of transitions</li>
+</ul>
+<p>Language of a FA = a set of accepted strings</p>
+<p>Ɛ (epsilon) move: decide wether to move or not</p>
+<h5 id="Deterministic-Finite-Automata-DFA"><a href="#Deterministic-Finite-Automata-DFA" class="headerlink" title="Deterministic Finite Automata (DFA)"></a>Deterministic Finite Automata (DFA)</h5><ul>
+<li>One transition per input per state (different move must have different input)</li>
+<li>No epsilon-moves (must consume a input when move)</li>
+</ul>
+<h5 id="Nondeterministic-Finite-Automata-NFA"><a href="#Nondeterministic-Finite-Automata-NFA" class="headerlink" title="Nondeterministic Finite Automata (NFA)"></a>Nondeterministic Finite Automata (NFA)</h5><ul>
+<li>Can have multiple transitions for one input in a given state</li>
+<li>Can have epsilon-moves</li>
+</ul>
+<p>The only fundamental difference between DFA and NFA is: whether it has <strong>epsilon-moves</strong> or not!</p>
+<p>DFA executes faster than NFA; NFA is smaller than DFA.</p>
+<h5 id="Regular-Expression-to-NFA"><a href="#Regular-Expression-to-NFA" class="headerlink" title="Regular Expression to NFA"></a>Regular Expression to NFA</h5><p>AB, A+B, A*</p>
+<h5 id="NFA-to-DFA"><a href="#NFA-to-DFA" class="headerlink" title="NFA to DFA"></a>NFA to DFA</h5><p>epsilon-closure</p>
+<p>a DFA could have 2^n-1 states for an NFA with n states</p>
+<h5 id="Implement-FA"><a href="#Implement-FA" class="headerlink" title="Implement FA"></a>Implement FA</h5><p>Lexical Specification —&gt; Regular Expressions —&gt; NFA [ —&gt; DFA ] —&gt; Table-driven Implementation</p>
+<p>Table-driven:</p>
+<ul>
+<li>a 2D table, one dimension is states, the other is inputs</li>
+<li>T[s][i] = next state from state s after reading i</li>
+<li>(can use 1D table to save space, each table item is a pointer to a state table, so the state table can be shared)</li>
+</ul>
+<p>Sometimes, the conversion from NFA to DFA is very expensive or the table of DFA is very large, so we can use table-driven directly on <strong>NFA</strong>, but scanner will be much slower due to the states are a set.</p>
+<h2 id="Syntax-Analysis-Parsing"><a href="#Syntax-Analysis-Parsing" class="headerlink" title="Syntax Analysis (Parsing)"></a>Syntax Analysis (Parsing)</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">Phase</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Lexer</td>
+<td>String of characters</td>
+<td>String of tokens</td>
+</tr>
+<tr>
+<td style="text-align:left">Parser</td>
+<td>String of tokens</td>
+<td>Parse tree (or AST)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Context-Free-Grammars-CFGs"><a href="#Context-Free-Grammars-CFGs" class="headerlink" title="Context Free Grammars (CFGs)"></a>Context Free Grammars (CFGs)</h4><p>Consists of:</p>
+<ul>
+<li>A set of terminals</li>
+<li>A set of non-terminals</li>
+<li>A start symbol</li>
+<li>A set of productions</li>
+</ul>
+<p>Terminals ought to be <strong>tokens</strong> of the language</p>
+<h5 id="Regular-Language"><a href="#Regular-Language" class="headerlink" title="Regular Language"></a>Regular Language</h5><p>a regular language (also called a rational language) is a formal language that can be expressed using a <strong>regular expression</strong>, or can be defined as a language recognized by a <strong>finite automaton</strong>.</p>
+<p>Deciding whether a given context-free grammar generates a regular language is an <strong>undecidable</strong> problem.</p>
+<h5 id="Derivations"><a href="#Derivations" class="headerlink" title="Derivations"></a>Derivations</h5><p>A derivation defines a parse tree, but one parse tree may have many derivations</p>
+<p>Left-most and right-most derivations are important in parse implementation</p>
+<h5 id="Ambiguity"><a href="#Ambiguity" class="headerlink" title="Ambiguity"></a>Ambiguity</h5><p>A grammar is ambiguous if it has <strong>more than one</strong> parse tree for some string</p>
+<p>So we must convert a ambiguous grammar to a unambiguous grammar</p>
+<p>It is impossible to convert automatically an ambiguous grammar to an unambiguous grammar</p>
+<p>So, sometimes we allow more natural definitions</p>
+<p>Most tools allow <strong>precedence and associativity</strong> declarations to disambiguate grammars</p>
+<h5 id="Abstract-Syntax-Tree-AST"><a href="#Abstract-Syntax-Tree-AST" class="headerlink" title="Abstract Syntax Tree(AST)"></a>Abstract Syntax Tree(AST)</h5><p>Like parse tree, but ignore some details</p>
+<p>Capture the nesting structure, more compact and easier to use, the core data structure in a compiler</p>
+<h4 id="Top-down-Parsing"><a href="#Top-down-Parsing" class="headerlink" title="Top-down Parsing"></a>Top-down Parsing</h4><p>Top-down parsing begins with the start symbol, do leftmost derivation, until there are no non-terminals and match input.</p>
+<h5 id="Recursive-Descent-Parsing-non-deterministic"><a href="#Recursive-Descent-Parsing-non-deterministic" class="headerlink" title="Recursive Descent Parsing (non-deterministic)"></a>Recursive Descent Parsing (non-deterministic)</h5><p><strong>Backtrack</strong> when doesn’t match a alternative.</p>
+<p>The naive algorithm has limitations:</p>
+<ul>
+<li>If a production for non-terminal X succeeds, it cannot backtrack to try a different production. Solution: do <strong>Left-factoring</strong></li>
+<li><strong>Left recursion</strong>. Solution: eliminate it. And this can be done automatically, refer to Dragon Book for more general algorithm.</li>
+</ul>
+<p>GCC uses Recursive Descent Parsing</p>
+<h5 id="Predictive-Parsing-determininstic-–-LL-1"><a href="#Predictive-Parsing-determininstic-–-LL-1" class="headerlink" title="Predictive Parsing (determininstic) – LL(1)"></a>Predictive Parsing (determininstic) – LL(1)</h5><p>LL(k) grammars: left-to-right (scan input from left to right), left-most derivation (always work on the leftmost non-terminal in the parse tree), k stands for k tokens of look ahead.</p>
+<p>A lot like recursive-descent, but parser can predict which production to use and <strong>no backtracking</strong>.</p>
+<p>Left-refactoring: convert a grammar with common prefix in some productions to no common prefix.</p>
+<p>Left factoring will result in at most a single valid production for any token of input.</p>
+<p>Implementation: Predict and match, table-driven.</p>
+<h5 id="Construct-Predictive-Parsing-Table"><a href="#Construct-Predictive-Parsing-Table" class="headerlink" title="Construct Predictive Parsing Table"></a>Construct Predictive Parsing Table</h5><p>First Sets: care about what the symbol can generate</p>
+<p>Follow Sets: care about where the symbol be used</p>
+<h5 id="LL-1-definition"><a href="#LL-1-definition" class="headerlink" title="LL(1) definition"></a>LL(1) definition</h5><p>If a table entry is multiply defined then G is <strong>not</strong> LL(1), like: not left factored, left recursive, ambiguous, other grammars need more tokens look ahead</p>
+<p>Most programming language CFG are <strong>not</strong> LL(1)</p>
+<h4 id="Bottom-up-Parsing"><a href="#Bottom-up-Parsing" class="headerlink" title="Bottom-up Parsing"></a>Bottom-up Parsing</h4><p>Bottom-up parsing reduces a string to the start symbol by inverting productions.</p>
+<p>More general than top-down parsing</p>
+<p>Don’t need left-factored grammars, and don’t need to eliminate left-recursive, but still <strong>cannot</strong> deal with ambiguous grammars (need to define precedence)</p>
+<p><u>Fact 1. A bottom-up parser traces a right-most derivation <strong>in reverse</strong>.</u></p>
+<h5 id="Shift-Reduce-Parsing"><a href="#Shift-Reduce-Parsing" class="headerlink" title="Shift Reduce Parsing"></a>Shift Reduce Parsing</h5><p>Bottom-up parsing uses only two actions: Shift and Reduce</p>
+<p>Only tokens to the left of the cursor(|) may be reduced</p>
+<p>This algorithm can be implemented by <strong>stack</strong></p>
+<ul>
+<li>Shift pushes a terminal on the stack</li>
+<li>Reduce pops symbols off the stack, and pushes a non-terminal on the stack</li>
+</ul>
+<p>Shift-reduce conflict: it is legal shift or reduce (not good, can be solved by precedence definition)</p>
+<p>Reduce-reduce conflict: it is legal to reduce by two different productions (<strong>bad</strong>, need to rewrite grammar)</p>
+<p>Handles: A handle is a reduction that also allows further reductions back to the start symbol</p>
+<p><u>Fact 2. In shift-reduce parsing, handles appear only at the <strong>top of the stack</strong>, never inside.</u></p>
+<p>So, handles are never to the left of the rightmost non-terminal, the | never move left</p>
+<p>Bottom-up parsing algorithms are based on recognizing handles</p>
+<p>LR(k) grammars: left-to-right (scan input from left to right), right-most derivation (always work on the rightmost non-terminal in the parse tree), k stands for k tokens of look ahead</p>
+<p>LALR(k): Look-Ahead LR(k) grammars</p>
+<p>SLR(k): Simple LR(k) grammars</p>
+<p>No formal algorithms to recognize handles, but there are good <strong>heuristics</strong> for guessing handles</p>
+<p>Viable prefix: a is a viable prefix if there is an w such that a|w is a state of a shift-reduce parser</p>
+<p><u>Fact 3. For any grammars, the set of viable prefixes is a regular language.</u></p>
+<p>To recognize viable prefixes, we must: Recognize a sequence of partial rhs’s of productions, where Each partial rhs can eventually reduce to part of the missing suffix of its predecessor.</p>
+<p>Use <strong>NFA</strong> to recognize viable prefixes.</p>
+<p>The NFA is constructed by adding an epsilon-move for each possible production, and a non-terminal or terminal move for each possible shift move in a production.</p>
+<h5 id="SLR-parsing"><a href="#SLR-parsing" class="headerlink" title="SLR parsing"></a>SLR parsing</h5><p>LR(0) parsing may have reduce-reduce or shift-reduce conflicts</p>
+<p>SLR improves on LR(0) shift/reduce heuristics, fewer states have conflicts</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Reduce by X—&gt; b if</span><br><span class="line">	s contains item X—&gt; b.</span><br><span class="line">	t ∈ Follow(X)</span><br><span class="line">Shift if</span><br><span class="line">	s contains item X—&gt; b.tw</span><br></pre></td></tr></table></figure>
+<p>Due to re-iterating all stack in each step is wasteful, we should do SLR improvement: change stack to contains pairs (Symbol, DFA state)</p>
+<h5 id="LR-1-LALR-1-parsing"><a href="#LR-1-LALR-1-parsing" class="headerlink" title="LR(1) / LALR(1) parsing"></a>LR(1) / LALR(1) parsing</h5><p>More powerful than SLR</p>
+<p>Build lookahead into items, <strong>[LR(0) item, lookahead token]</strong></p>
+<h2 id="Semantic-Analysis"><a href="#Semantic-Analysis" class="headerlink" title="Semantic Analysis"></a>Semantic Analysis</h2><p>The last front-end phase</p>
+<p>Do many kinds of <strong>checks</strong>, the requirements depend on the language</p>
+<h4 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h4><p>Match identifier declarations with uses</p>
+<p>The scope of an identifier is the portion of a program in which that identifier is accessible</p>
+<p>Static scope: scope depends only on the program text, <strong>not run-time</strong> behavior</p>
+<p>Most identifiers follow the <strong>most-closely</strong> nested rule</p>
+<h4 id="Symbol-Tables"><a href="#Symbol-Tables" class="headerlink" title="Symbol Tables"></a>Symbol Tables</h4><p>A symbol table is a data structure that tracks the <strong>current</strong> <strong>bindings of identifiers</strong> at each point in the AST.</p>
+<p>For a simple symbol table we can use a <strong>stack</strong>.</p>
+<p>Operations: enter_scope, find_symbol, add_symbol, check_scope, exit_scope</p>
+<p>Semantic analysis requires multiple passes.</p>
+<h4 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h4><p>A set of values, a set of <strong>operations</strong> on those values.</p>
+<p><strong>Classes</strong> are one <strong>instantiation</strong> of the modern notion of type.</p>
+<p>A language’s type system specifies which operations are <strong>valid</strong> for which types.</p>
+<p>Type checking is to ensure that operations are used with the correct types.</p>
+<p>Type inference is to fill in missing type information.</p>
+<p>Three kinds of languages:</p>
+<ul>
+<li>Statically typed: type checking is done as part of compilation (C, Java…)</li>
+<li>Dynamically typed: type checking is done as part of execution (Lisp, Python…)</li>
+<li>Untyped: No type checking (machine code)</li>
+</ul>
+<p>Formalism for type checking: <strong>logical rules of inference</strong></p>
+<ul>
+<li><strong>If</strong> Hypothesis is true, <strong>then</strong> Conclusion is true.</li>
+</ul>
+<p>Type environment: give types for <strong>free</strong> variables in the current scope (O)</p>
+<ul>
+<li>A variable is free in an expression if it is not defined within the expression.</li>
+</ul>
+<p>Types are computed up the AST from leaves towards root.</p>
+<p>Subtyping (object-orient inheritance)</p>
+<ul>
+<li>The least upper bound of two types is their <strong>least common ancestor</strong> in the inheritance tree.</li>
+</ul>
+<p>Methods Typing (M)</p>
+<ul>
+<li>Method and object identifiers live in different namespaces</li>
+<li>Method signature</li>
+</ul>
+<p>Current Class Typing (C)</p>
+<p><strong>NOTE</strong>: Different languages have very different type rules, but in general, type rules are defined on the structure of expressions, and are modeled by an environment.</p>
+<h5 id="Static-Typing-v-s-Dynamic-Typing"><a href="#Static-Typing-v-s-Dynamic-Typing" class="headerlink" title="Static Typing v.s. Dynamic Typing"></a>Static Typing v.s. Dynamic Typing</h5><p>In COOL (like C++), the static type of a variable will be its given type. The dynamic type of that variable will depend on what is assigned to it during program execution.</p>
+<p>∀E,  dynamic_type(E) ≤ static_type(E)</p>
+<ul>
+<li>All operations can be used on C can also can be used on C’≤C</li>
+<li>Subclass only <strong>add</strong> attributes and methods</li>
+<li>Methods can be redefined but with <strong>same</strong> type</li>
+</ul>
+<h5 id="COOL-SELF-TYPE-A-static-type"><a href="#COOL-SELF-TYPE-A-static-type" class="headerlink" title="(COOL) SELF_TYPE (A static type) *"></a>(COOL) SELF_TYPE (A static type) *</h5><p>Allows the return type of a member method to <strong>change</strong> when it is inherited</p>
+<p>SELF_TYPE can be seen as a type <strong>variable</strong> that ranges over all the sub-classes of the class in which it appears.</p>
+<p>SELF_TYPE(C) ≤ C</p>
+<p>Four rules for SELF_TYPE (extend <strong>≤</strong> and <strong>lub</strong> rules) …</p>
+<p>Six usages for SELF_TYPE …</p>
+<h5 id="Error-Recovery"><a href="#Error-Recovery" class="headerlink" title="Error Recovery"></a>Error Recovery</h5><p>Assign type <strong>Object</strong> to ill-typed expression</p>
+<p>Introduce a new type <strong>No_type</strong> to ill-typed expression, for</p>
+<ul>
+<li>No_type ≤ C (every other class), so every operation is defined for No_type</li>
+<li>A real compiler would use something like No_type, with more complicated implementation</li>
+</ul>
+<h2 id="Runtime-Organization"><a href="#Runtime-Organization" class="headerlink" title="Runtime Organization"></a>Runtime Organization</h2><p>Static, compile time</p>
+<p>Dynamic, run time</p>
+<p>Compiler is responsible for</p>
+<ul>
+<li>Generating code</li>
+<li>Orchestrating use of the data area</li>
+</ul>
+<p>Lifetime is a dynamic concept. Scope is a static concept.</p>
+<h4 id="Activation-Record-Frame"><a href="#Activation-Record-Frame" class="headerlink" title="Activation Record (Frame)"></a>Activation Record (Frame)</h4><p>Real compilers hold as much part of the frame as possible in registers. Especially the method result and arguments.</p>
+<p>The compiler must determine, at <strong>compile-time</strong>, the <strong>layout</strong> of activation records and generate code that correctly <strong>accesses locations</strong> in the activation record</p>
+<h4 id="Global-Variables"><a href="#Global-Variables" class="headerlink" title="Global Variables"></a>Global Variables</h4><p>All references to a global variable point to the <strong>same</strong> object.</p>
+<p>Globals are assigned a <strong>fixed</strong> address <strong>once</strong>.</p>
+<h4 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h4><p>Heap is an area to store dynamically allocated data which cannot be kept in the AR.</p>
+<h4 id="Runtime-Picture-for-many-languages"><a href="#Runtime-Picture-for-many-languages" class="headerlink" title="Runtime Picture (for many languages)"></a>Runtime Picture (for many languages)</h4><ul>
+<li>Code Area: fixed size, read-only</li>
+</ul>
+<ul>
+<li>Static Area: fixed size, readable or writable, for <strong>global</strong> and <strong>static</strong> values</li>
+</ul>
+<ul>
+<li>Stack Area: each AR usually fixed size, for <strong>local</strong> values</li>
+</ul>
+<ul>
+<li>Heap Area: contains all other data, for <strong>dynamic</strong> values</li>
+</ul>
+<h2 id="Code-Generation"><a href="#Code-Generation" class="headerlink" title="Code Generation"></a>Code Generation</h2><p>Virtual Machine Design</p>
+<h4 id="Machine"><a href="#Machine" class="headerlink" title="Machine"></a>Machine</h4><ul>
+<li>Stack Machine (Java JVM, C# CLR, Python VM…)</li>
+</ul>
+<ul>
+<li>Register Machine (LLVM, Lua VM, Dalvik VM used in Android OS)</li>
+</ul>
+<p><a href="https://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/" target="_blank" rel="external">Difference</a> : is in the mechanism used for storing and retrieving operands and their results.</p>
+<p>Stack Machine is a very simple machine model.</p>
+<p><strong>Pop</strong> operands from the stack, <strong>compute</strong> the operation using the operands, <strong>push</strong> the result on the stack.</p>
+<p>In contrast to Register Machine, Stack Machine generates more compact programs.</p>
+<p>One-register stack machine with <strong>accumulator</strong></p>
+<h4 id="MIPS-Architecture"><a href="#MIPS-Architecture" class="headerlink" title="MIPS Architecture"></a>MIPS Architecture</h4><p>MIPS is one of Instruction Set Architecture — ISA. (others like x86, ARM, PowerPC…)</p>
+<p>Reduced Instruction Set Computer — RISC</p>
+<p>Registers and Instructions</p>
+<h4 id="Code-Generation-1"><a href="#Code-Generation-1" class="headerlink" title="Code Generation"></a>Code Generation</h4><p>Expression</p>
+<ul>
+<li>Compute the value of e in <strong>accumulator</strong></li>
+<li><strong>Preserve</strong> the <strong>stack pointer</strong> and the contents of the stack</li>
+</ul>
+<p>IF-ELSE</p>
+<ul>
+<li>JUMP to label</li>
+<li>Unconditional JUMP</li>
+</ul>
+<p>Function ★</p>
+<ul>
+<li>Code for function call and function definition depends on the layout of the <strong>AR</strong></li>
+<li><strong>Frame pointer</strong> points to the <strong>current</strong> activation, and points to the top of frame</li>
+<li>The <strong>callee</strong> pops all the AR, including return address, actual arguments, saved old frame pointer</li>
+</ul>
+<p>Variable Reference</p>
+<ul>
+<li>For functions parameters or local variables, how to look for them within AR?</li>
+<li>Cannot use stack pointer, because it will be growing and shrinking, it changes.</li>
+<li>We can use <strong>frame pointer</strong>, because it does not move, variables are in fixed offset besides it.</li>
+</ul>
+<p>Temporaries</p>
+<ul>
+<li>Keep temporaries in the AR</li>
+<li>Code generation must know <strong>how many</strong> temporaries are in use at each point</li>
+</ul>
+<p>Objects (OO Implementation) ★</p>
+<ul>
+<li>OO Slogan:If B is a subclass of A, than an object of class B can be used <strong>wherever</strong> an object of class A is expected.</li>
+<li>Object Layout (contiguous memory):<ul>
+<li>Class tag: an integer to identify class</li>
+<li>Object size: size of the whole object</li>
+<li>Dispatch pointer: a pointer to a table of methods</li>
+<li>Attributes: in subsequent slots</li>
+</ul>
+</li>
+</ul>
+<h2 id="Operational-Semantics"><a href="#Operational-Semantics" class="headerlink" title="Operational Semantics"></a>Operational Semantics</h2><p>（操作语义，属于形式语义学的一个分支，其他有指称语义，代数语义，公理语义，慎跳 -.-）</p>
+<p>Describes program evaluation via execution rules on an abstract machine.</p>
+<p>Formal notation: <strong>logical rules of inference</strong>, as type checking</p>
+<h2 id="Optimization"><a href="#Optimization" class="headerlink" title="Optimization"></a>Optimization</h2><p>Most complexity in modern compilers</p>
+<h4 id="Intermediate-Code-IR"><a href="#Intermediate-Code-IR" class="headerlink" title="Intermediate Code (IR)"></a>Intermediate Code (IR)</h4><p>More details than the source, fewer details than the target</p>
+<p>IR = hight-level assembly language</p>
+<ul>
+<li>use register names, but has an unlimited number</li>
+</ul>
+<ul>
+<li>use control structure like assembly</li>
+</ul>
+<ul>
+<li>use opcode but some are higher level</li>
+</ul>
+<p>The most widely used form is <strong>three-address-code</strong></p>
+<h4 id="Optimization-1"><a href="#Optimization-1" class="headerlink" title="Optimization"></a>Optimization</h4><p>Perform optimization on <strong>IR</strong>, because:</p>
+<ul>
+<li>it is machine independent</li>
+<li>exposes optimization opportunities</li>
+</ul>
+<p>A <strong>basic block</strong> is a maximal sequence of instructions with no labels and no jumps.</p>
+<p>A <strong>control-flow graph</strong> is a directed graph with basic blocks as nodes.</p>
+<p>Optimization seeks to improve program’s <strong>Execution time (most)</strong>, code size, memory usage, disk access, power load…</p>
+<p>Most languages have three granularities of optimizations:</p>
+<ul>
+<li><strong>Local optimization</strong>: apply to a <strong>basic block</strong></li>
+</ul>
+<ul>
+<li><strong>Global optimization</strong>: apply to a <strong>control-flow graph</strong> (method body)</li>
+</ul>
+<ul>
+<li>Inter-procedural optimization: apply across method boundaries</li>
+</ul>
+<p>BUT!</p>
+<ul>
+<li>Premature optimization is the root of all evil. — Donald Knuth</li>
+<li>Some optimizations are hard to implement, cost much time, and have low pay off.</li>
+</ul>
+<h5 id="Local-Optimization"><a href="#Local-Optimization" class="headerlink" title="Local Optimization"></a>Local Optimization</h5><p>Strategies:</p>
+<ul>
+<li>Algebraic simplification</li>
+</ul>
+<ul>
+<li>Constant folding</li>
+<li>Common subexpression elimination</li>
+<li>Copy propagation</li>
+<li>Dead code elimination</li>
+</ul>
+<p>Compilers can do optimization in many rounds until no improvement is possible.</p>
+<h5 id="Peephole-Optimization"><a href="#Peephole-Optimization" class="headerlink" title="Peephole Optimization"></a>Peephole Optimization</h5><p>Effective for improving <strong>assembly</strong> code</p>
+<p>The “peephole” is a short sequence of (usually contiguous) instructions</p>
+<p>Many local optimizations can be cast as peephole optimizations</p>
+<h5 id="Global-Optimization"><a href="#Global-Optimization" class="headerlink" title="Global Optimization"></a>Global Optimization</h5><p>Dataflow analysis</p>
+<p>Const Propagation (<strong>forward</strong> analysis):</p>
+<ul>
+<li>To replace a use of x by a constant k, we must know: On <strong>every</strong> path to the use of x, the <strong>last</strong> assignment to x is x:= k</li>
+</ul>
+<p>The analysis of a complicated program can be expressed as a <strong>combination</strong> of <strong>simple rules</strong> relating the <strong>change in information</strong> between <strong>adjacent statements</strong></p>
+<p>Loop Analysis:</p>
+<ul>
+<li>Init each point with <strong>bottom</strong>, except the entry point with <strong>top</strong></li>
+</ul>
+<p>Ordering:</p>
+<ul>
+<li>bottom &lt; C &lt; top</li>
+</ul>
+<p>Liveness Analysis (<strong>backward</strong> analysis):</p>
+<ul>
+<li>Live = <strong>may</strong> be used in the future</li>
+<li>Dead = <strong>never</strong> be used in the future</li>
+<li>dead &lt; live</li>
+</ul>
+<p>There are many other global flow analyses, Most can be classified as either <strong>forward or backward</strong>, Most also follow the methodology of <strong>local rules</strong> relating information between <strong>adjacent</strong> program points</p>
+<h2 id="Register-Allocation"><a href="#Register-Allocation" class="headerlink" title="Register Allocation"></a>Register Allocation</h2><p>Target:</p>
+<ul>
+<li>Rewrite the intermediate code to use <strong>no more temporaries</strong> than there are <strong>machine registers.</strong></li>
+</ul>
+<p>If t1 and t2 are live at the same time, they cannot share a register</p>
+<ul>
+<li>Compute live variables for each point</li>
+<li>Construct an undirected graph: register interference graph (RIG)</li>
+</ul>
+<h4 id="Graph-Coloring-Algorithm"><a href="#Graph-Coloring-Algorithm" class="headerlink" title="Graph Coloring Algorithm"></a>Graph Coloring Algorithm</h4><p>Assign colors to nodes, such that nodes (<strong>temporaries</strong>) connected by an edge have different colors (<strong>registers</strong>).</p>
+<p>If the RIG is k-colorable then there is a register assignment that uses no more than k registers</p>
+<p>This problem is a <strong>NP-hard</strong> problem, so we use <strong>heuristics</strong>:</p>
+<ol>
+<li>Pick a node t with fewer than k neighbors</li>
+<li>Eliminate t and its edges</li>
+<li>Repeat 1-2, until the RIG is empty</li>
+<li>Color these nodes in reverse order</li>
+</ol>
+<p>When registers cannot hold all temporaries, some of them are <strong>spilled</strong> to memory</p>
+<h4 id="Cache-Managing"><a href="#Cache-Managing" class="headerlink" title="Cache Managing"></a>Cache Managing</h4><p>Compilers are very good at managing registers, but <strong>not</strong> good at managing <strong>caches</strong>.</p>
+<h2 id="Garbage-Collection-GC"><a href="#Garbage-Collection-GC" class="headerlink" title="Garbage Collection (GC)"></a>Garbage Collection (GC)</h2><p>C and C++ programs have many storage bugs, which are very hard to find.</p>
+<p><strong>Automatic</strong> memory management became <strong>mainstream</strong> with the popularity of JAVA.</p>
+<p>Allocate space as needed for new objects</p>
+<p>When (or before) space runs out: Compute what objects might be <strong>used</strong> <strong>again</strong> and <strong>Free</strong> the space used by objects <strong>not found</strong></p>
+<h4 id="Three-GC-Algorithms"><a href="#Three-GC-Algorithms" class="headerlink" title="Three GC Algorithms"></a>Three GC Algorithms</h4><h5 id="Mark-and-Sweep"><a href="#Mark-and-Sweep" class="headerlink" title="Mark and Sweep"></a>Mark and Sweep</h5><p>Mark: traces reachable objects</p>
+<p>Sweep: collects garbage objects</p>
+<p>Pointer reversal is a trick that do not use extra auxiliary space.</p>
+<p>Mark and sweep can <strong>fragment</strong> the memory</p>
+<p>Advantage: objects are <strong>not moved</strong> during GC</p>
+<h5 id="Stop-and-Copy"><a href="#Stop-and-Copy" class="headerlink" title="Stop and Copy"></a>Stop and Copy</h5><p>Memory is organized into two areas</p>
+<ul>
+<li>old space: used for allocation</li>
+<li>new space: used as a reserve for GC (cannot be used by program)</li>
+</ul>
+<p>Steps:</p>
+<ol>
+<li>Copies all reachable objects from old space into new space, <strong>garbage</strong> is left behind</li>
+<li>After the copy the roles of the old and new spaces are <strong>reversed</strong> and the program resumes</li>
+</ol>
+<p>Stop and copy is generally believed to be the <strong>fastest</strong> GC technique</p>
+<p>But some languages do not allow copying, like C and C++</p>
+<p>For these languages, it is OK to be <strong>conservative</strong>, if a memory word looks like a pointer it is considered a pointer.</p>
+<p>And only mark-and-sweep can be used in these languages.</p>
+<h5 id="Reference-Counting"><a href="#Reference-Counting" class="headerlink" title="Reference Counting"></a>Reference Counting</h5><p>A <strong>in-time</strong> GC algorithm</p>
+<p>Store in each object the <strong>number</strong> of pointers to that object (reference count)</p>
+<p>Advantages:</p>
+<ul>
+<li>easy to implement</li>
+<li>without large pauses</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>cannot collect circular structures</li>
+<li>be slow at each assignment</li>
+</ul>
+<h5 id="More-Advanced-GC-Algorithms"><a href="#More-Advanced-GC-Algorithms" class="headerlink" title="More Advanced GC Algorithms"></a>More Advanced GC Algorithms</h5><p>Concurrent: GC works in background while program is running</p>
+<p>Generational: do not scan long-lived objects at every collection</p>
+<p>Real-time: bound the length of pauses</p>
+<p>Parallel: several collectors working at once</p>
+<h2 id="Javac"><a href="#Javac" class="headerlink" title="Javac"></a>Javac</h2><p>Java and Cool are bool object oriented garbage collected languages, Java = Cool + many more features</p>
+<h4 id="History"><a href="#History" class="headerlink" title="History"></a>History</h4><p>Initial development took several years (1991-1994), mainly targeted at set-top devices.</p>
+<p>Later on, Java retargeted at <strong>Internet</strong> (1994-1995), won TCL and Python.</p>
+<p><strong>Traceable</strong> to other languages:</p>
+<ul>
+<li>Types: Modula-3</li>
+</ul>
+<ul>
+<li>OO, interfaces: Objective C and C++</li>
+</ul>
+<ul>
+<li>Dynamic, reflection: Lisp</li>
+</ul>
+<p>A very <strong>BIG</strong> language, lots of feature interactions.</p>
+<h4 id="Arrays"><a href="#Arrays" class="headerlink" title="Arrays"></a>Arrays</h4><p>Having <strong>multiple aliases (pointers)</strong> to <strong>updateable locations</strong> with <strong>different types</strong> is <strong>unsound</strong>!</p>
+<p>e.g.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">B[] b = <span class="keyword">new</span> B[<span class="number">10</span>];</span><br><span class="line">A[] a = b;</span><br><span class="line">a[<span class="number">0</span>] = <span class="keyword">new</span> A();</span><br><span class="line">b[<span class="number">0</span>].aMethodNotDeclaredInA(); <span class="comment">// runtime error</span></span><br></pre></td></tr></table></figure>
+<p>Many languages, not only Java, have this problem. Solution:</p>
+<ul>
+<li>Disallow subtyping through arrays, <strong>statically</strong></li>
+</ul>
+<p>Java fixes the problem by checking each array assignment at <strong>runtime</strong> for type correctness</p>
+<h4 id="Exceptions"><a href="#Exceptions" class="headerlink" title="Exceptions"></a>Exceptions</h4><p>Exceptions are classes in Java</p>
+<p>There are many techniques to implement exceptions, some of them are complex to <strong>reduce</strong> cost.</p>
+<p>When exceptions are thrown during object <strong>finalization</strong>, <strong>no one</strong> will catch and handle it.</p>
+<p>In Java, <strong>methods</strong> must <strong>declare</strong> types of exceptions they may raise, for static checking.</p>
+<h4 id="Interfaces"><a href="#Interfaces" class="headerlink" title="Interfaces"></a>Interfaces</h4><p>Interfaces play the same role as multiple inheritance in C++</p>
+<p>Methods in classes implementing interfaces <strong>need not be at fixed offsets</strong>.</p>
+<p>So, dispatch a method in an interface need more cost</p>
+<p>A simple approach is using a lookup table (hash), method names —&gt; methods</p>
+<h4 id="Coercions-Type-Conversion）"><a href="#Coercions-Type-Conversion）" class="headerlink" title="Coercions (Type Conversion）"></a>Coercions (Type Conversion）</h4><p>A coercion is really just a <strong>primitive</strong> function the <strong>compiler</strong> inserts for you</p>
+<p>Java distinguishes two kinds of coercions &amp; casts:</p>
+<ul>
+<li>Widening: always succeed (int —&gt; float)</li>
+</ul>
+<ul>
+<li>Narrowing (must <strong>explicit</strong>): may fail if data can’t be converted to desired type (float —&gt; int, downcasts)</li>
+</ul>
+<p><strong>Bool</strong> is the only type in Java for which there are <strong>no</strong> coercions/casts defined</p>
+<h4 id="Concurrency-Threads"><a href="#Concurrency-Threads" class="headerlink" title="Concurrency (Threads)"></a>Concurrency (Threads)</h4><p>Thread objects have class <strong>Thread</strong></p>
+<p>Synchronization obtains a lock on the object: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (x) &#123; e &#125;</span><br></pre></td></tr></table></figure>
+<p>Java concurrency semantics are difficult to understand in detail</p>
+<h4 id="Other-Topics"><a href="#Other-Topics" class="headerlink" title="Other Topics"></a>Other Topics</h4><p>Java allows <strong>classes</strong> to be loaded at run time</p>
+<ul>
+<li><strong>Type checking</strong> source takes place at <strong>compile</strong> time</li>
+<li><strong>Bytecode verification</strong> takes place at <strong>run</strong> time</li>
+</ul>
+<p>Loading policies handle by a <strong>ClassLoader</strong></p>
+<p>Initialization in Java is complex</p>
+<p>Class Object (Not the instance of the class, but a object which <strong>is the class</strong>)</p>
+<ul>
+<li>It has all the information about the class, used for <strong>introspection</strong> or <strong>reflection</strong></li>
+<li>The support of dynamic loading</li>
+</ul>
+<p>Initialize superclass</p>
+<ul>
+<li>In textual order, but <strong>static</strong> and <strong>final</strong> fields first</li>
+<li>Give every field a <strong>default</strong> value before initialization</li>
+</ul>
+<p>Java is well done in production languages, but it includes some features we don’t fully understand.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/12/Stanford-Compilers-Thoughts/" rel="next" title="Stanford Compilers （上）">
+                <i class="fa fa-chevron-left"></i> Stanford Compilers （上）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Shine Xu" />
+          <p class="site-author-name" itemprop="name">Shine Xu</p>
+          <p class="site-description motion-element" itemprop="description">Make my life</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vesion" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://cn.linkedin.com/in/xiang-xu-a18807a2" target="_blank" title="Linkedin">
+                  
+                    <i class="fa fa-fw fa-linkedin-square"></i>
+                  
+                  Linkedin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lexical-Analysis"><span class="nav-number">1.</span> <span class="nav-text">Lexical Analysis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Regular-Expression"><span class="nav-number">1.0.1.</span> <span class="nav-text">Regular Expression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Finite-Automata"><span class="nav-number">1.0.2.</span> <span class="nav-text">Finite Automata</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Deterministic-Finite-Automata-DFA"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Deterministic Finite Automata (DFA)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Nondeterministic-Finite-Automata-NFA"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">Nondeterministic Finite Automata (NFA)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Regular-Expression-to-NFA"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">Regular Expression to NFA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NFA-to-DFA"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">NFA to DFA</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Implement-FA"><span class="nav-number">1.0.2.5.</span> <span class="nav-text">Implement FA</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Syntax-Analysis-Parsing"><span class="nav-number">2.</span> <span class="nav-text">Syntax Analysis (Parsing)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Context-Free-Grammars-CFGs"><span class="nav-number">2.0.1.</span> <span class="nav-text">Context Free Grammars (CFGs)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Regular-Language"><span class="nav-number">2.0.1.1.</span> <span class="nav-text">Regular Language</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Derivations"><span class="nav-number">2.0.1.2.</span> <span class="nav-text">Derivations</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Ambiguity"><span class="nav-number">2.0.1.3.</span> <span class="nav-text">Ambiguity</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Abstract-Syntax-Tree-AST"><span class="nav-number">2.0.1.4.</span> <span class="nav-text">Abstract Syntax Tree(AST)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Top-down-Parsing"><span class="nav-number">2.0.2.</span> <span class="nav-text">Top-down Parsing</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Recursive-Descent-Parsing-non-deterministic"><span class="nav-number">2.0.2.1.</span> <span class="nav-text">Recursive Descent Parsing (non-deterministic)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Predictive-Parsing-determininstic-–-LL-1"><span class="nav-number">2.0.2.2.</span> <span class="nav-text">Predictive Parsing (determininstic) – LL(1)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Construct-Predictive-Parsing-Table"><span class="nav-number">2.0.2.3.</span> <span class="nav-text">Construct Predictive Parsing Table</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LL-1-definition"><span class="nav-number">2.0.2.4.</span> <span class="nav-text">LL(1) definition</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bottom-up-Parsing"><span class="nav-number">2.0.3.</span> <span class="nav-text">Bottom-up Parsing</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Shift-Reduce-Parsing"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">Shift Reduce Parsing</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SLR-parsing"><span class="nav-number">2.0.3.2.</span> <span class="nav-text">SLR parsing</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LR-1-LALR-1-parsing"><span class="nav-number">2.0.3.3.</span> <span class="nav-text">LR(1) / LALR(1) parsing</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Semantic-Analysis"><span class="nav-number">3.</span> <span class="nav-text">Semantic Analysis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Scope"><span class="nav-number">3.0.1.</span> <span class="nav-text">Scope</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Symbol-Tables"><span class="nav-number">3.0.2.</span> <span class="nav-text">Symbol Tables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Types"><span class="nav-number">3.0.3.</span> <span class="nav-text">Types</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Static-Typing-v-s-Dynamic-Typing"><span class="nav-number">3.0.3.1.</span> <span class="nav-text">Static Typing v.s. Dynamic Typing</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#COOL-SELF-TYPE-A-static-type"><span class="nav-number">3.0.3.2.</span> <span class="nav-text">(COOL) SELF_TYPE (A static type) *</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Error-Recovery"><span class="nav-number">3.0.3.3.</span> <span class="nav-text">Error Recovery</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime-Organization"><span class="nav-number">4.</span> <span class="nav-text">Runtime Organization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Activation-Record-Frame"><span class="nav-number">4.0.1.</span> <span class="nav-text">Activation Record (Frame)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Global-Variables"><span class="nav-number">4.0.2.</span> <span class="nav-text">Global Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Heap"><span class="nav-number">4.0.3.</span> <span class="nav-text">Heap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Runtime-Picture-for-many-languages"><span class="nav-number">4.0.4.</span> <span class="nav-text">Runtime Picture (for many languages)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-Generation"><span class="nav-number">5.</span> <span class="nav-text">Code Generation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Machine"><span class="nav-number">5.0.1.</span> <span class="nav-text">Machine</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MIPS-Architecture"><span class="nav-number">5.0.2.</span> <span class="nav-text">MIPS Architecture</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Code-Generation-1"><span class="nav-number">5.0.3.</span> <span class="nav-text">Code Generation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operational-Semantics"><span class="nav-number">6.</span> <span class="nav-text">Operational Semantics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Optimization"><span class="nav-number">7.</span> <span class="nav-text">Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Intermediate-Code-IR"><span class="nav-number">7.0.1.</span> <span class="nav-text">Intermediate Code (IR)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Optimization-1"><span class="nav-number">7.0.2.</span> <span class="nav-text">Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Local-Optimization"><span class="nav-number">7.0.2.1.</span> <span class="nav-text">Local Optimization</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Peephole-Optimization"><span class="nav-number">7.0.2.2.</span> <span class="nav-text">Peephole Optimization</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Global-Optimization"><span class="nav-number">7.0.2.3.</span> <span class="nav-text">Global Optimization</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Register-Allocation"><span class="nav-number">8.</span> <span class="nav-text">Register Allocation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Graph-Coloring-Algorithm"><span class="nav-number">8.0.1.</span> <span class="nav-text">Graph Coloring Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cache-Managing"><span class="nav-number">8.0.2.</span> <span class="nav-text">Cache Managing</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Garbage-Collection-GC"><span class="nav-number">9.</span> <span class="nav-text">Garbage Collection (GC)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Three-GC-Algorithms"><span class="nav-number">9.0.1.</span> <span class="nav-text">Three GC Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Mark-and-Sweep"><span class="nav-number">9.0.1.1.</span> <span class="nav-text">Mark and Sweep</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Stop-and-Copy"><span class="nav-number">9.0.1.2.</span> <span class="nav-text">Stop and Copy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Reference-Counting"><span class="nav-number">9.0.1.3.</span> <span class="nav-text">Reference Counting</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#More-Advanced-GC-Algorithms"><span class="nav-number">9.0.1.4.</span> <span class="nav-text">More Advanced GC Algorithms</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Javac"><span class="nav-number">10.</span> <span class="nav-text">Javac</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#History"><span class="nav-number">10.0.1.</span> <span class="nav-text">History</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Arrays"><span class="nav-number">10.0.2.</span> <span class="nav-text">Arrays</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exceptions"><span class="nav-number">10.0.3.</span> <span class="nav-text">Exceptions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Interfaces"><span class="nav-number">10.0.4.</span> <span class="nav-text">Interfaces</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Coercions-Type-Conversion）"><span class="nav-number">10.0.5.</span> <span class="nav-text">Coercions (Type Conversion）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Concurrency-Threads"><span class="nav-number">10.0.6.</span> <span class="nav-text">Concurrency (Threads)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Other-Topics"><span class="nav-number">10.0.7.</span> <span class="nav-text">Other Topics</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shine Xu</span>
+</div>
+
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'shinexu';
+      var disqus_identifier = '2016/05/13/Stanford-Compilers-Notes/';
+      var disqus_title = 'Stanford Compilers （下）';
+      var disqus_url = 'http://www.shinexu.com/2016/05/13/Stanford-Compilers-Notes/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

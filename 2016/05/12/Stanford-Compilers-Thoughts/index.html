@@ -84,19 +84,19 @@
 
 
 
-<meta name="description" content="前言终于上完了 Compilers 这门 Standford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。
-先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译">
+<meta name="description" content="前言终于上完了 Compilers 这门 Stanford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。
+先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Standford Compilers （上）">
-<meta property="og:url" content="http://www.shinexu.com/2016/05/12/standford-compilers/index.html">
+<meta property="og:title" content="Stanford Compilers （上）">
+<meta property="og:url" content="http://www.shinexu.com/2016/05/12/Stanford-Compilers-Thoughts/index.html">
 <meta property="og:site_name" content="Uncharted">
-<meta property="og:description" content="前言终于上完了 Compilers 这门 Standford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。
-先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译">
-<meta property="og:updated_time" content="2016-05-12T17:13:49.000Z">
+<meta property="og:description" content="前言终于上完了 Compilers 这门 Stanford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。
+先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器">
+<meta property="og:updated_time" content="2016-05-13T07:00:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Standford Compilers （上）">
-<meta name="twitter:description" content="前言终于上完了 Compilers 这门 Standford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。
-先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译">
+<meta name="twitter:title" content="Stanford Compilers （上）">
+<meta name="twitter:description" content="前言终于上完了 Compilers 这门 Stanford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。
+先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器">
 
 
 
@@ -114,7 +114,7 @@
   };
 </script>
 
-  <title> Standford Compilers （上） | Uncharted </title>
+  <title> Stanford Compilers （上） | Uncharted </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -254,7 +254,7 @@
             
             
               
-                Standford Compilers （上）
+                Stanford Compilers （上）
               
             
           </h1>
@@ -296,8 +296,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/12/standford-compilers/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/standford-compilers/" itemprop="commentsCount"></span>
+                <a href="/2016/05/12/Stanford-Compilers-Thoughts/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/12/Stanford-Compilers-Thoughts/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -320,8 +320,8 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>终于上完了 <a href="https://class.coursera.org/compilers-004" target="_blank" rel="external">Compilers</a> 这门 Standford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。</p>
-<p>先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器实在是说不过，所以就买了本<a href="https://book.douban.com/subject/25735333/" target="_blank" rel="external">《自制编程语言》</a>上路了，书算是本好书，至少在编译器项目入门书里算是不错的了，也是<a href="http://hllvm.group.iteye.com/group/topic/39194" target="_blank" rel="external">R大推荐</a>的一本书。但是翻了一段时间就发现了问题，总觉的作者在各个地方都浅尝辄止，而且 Lexical Analysis 和 Syntax Analysis 都是直接上的工具，所以看着不太过瘾，但是太学术的书，比如虎数、龙书之类的又看得太慢容易乏味，所以就搜了相关的公开课，最终找到了 Standford 开的这门神课，据说赞誉颇多，听完后觉得果然性价比很高，而且 <a href="https://profiles.stanford.edu/alex-aiken" target="_blank" rel="external">Alex Aiken</a> 教授讲得异常清晰，从编译器前端词法、语法、语义分析，到后端目标代码生成、优化策略、寄存器分配，最后再到程序运行时的表现、操作语义、垃圾回收等等，既有严谨的公式推导和逻辑演化，又有通俗的例子教程和图文展示，一套完整的流程下来，真正的是醍醐灌顶，如沐春风，相见恨晚！</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>终于上完了 <a href="https://class.coursera.org/compilers-004" target="_blank" rel="external">Compilers</a> 这门 Stanford 开的神课，历时一个月，包括所有 lectures 和 quizzes，比较遗憾的是没有跟着做 Cool compiler assignments。</p>
+<p>先说下为啥要上这门课，最初的原因还是自己想要写一门属于自己的编程语言这样的初心，总觉的作为一个整天跟人争着啥啥语言牛逼，啥啥语言垃圾的 CS 人（不敢说自己是 PL 人），不在学校里写个编译器实在是说不过，所以就买了本<a href="https://book.douban.com/subject/25735333/" target="_blank" rel="external">《自制编程语言》</a>上路了，书算是本好书，至少在编译器项目入门书里算是不错的了，也是<a href="http://hllvm.group.iteye.com/group/topic/39194" target="_blank" rel="external">R大推荐</a>的一本书。但是翻了一段时间就发现了问题，总觉的作者在各个地方都浅尝辄止，而且 Lexical Analysis 和 Syntax Analysis 都是直接上的工具，所以看着不太过瘾，但是太学术的书，比如虎数、龙书之类的又看得太慢容易乏味，所以就搜了相关的公开课，最终找到了 Stanford 开的这门神课，据说赞誉颇多，听完后觉得果然性价比很高，而且 <a href="https://profiles.stanford.edu/alex-aiken" target="_blank" rel="external">Alex Aiken</a> 教授讲得异常清晰，从编译器前端词法、语法、语义分析，到后端目标代码生成、优化策略、寄存器分配，最后再到程序运行时的表现、操作语义、垃圾回收等等，既有严谨的公式推导和逻辑演化，又有通俗的例子教程和图文展示，一套完整的流程下来，真正的是醍醐灌顶，如沐春风，相见恨晚！</p>
 <p>当然了，说到底还是怪自己本科时候编译原理课打酱油，现在不得不亡羊补牢：）</p>
 <a id="more"></a>
 <h2 id="C4！"><a href="#C4！" class="headerlink" title="C4！"></a>C4！</h2><p>这里说下，之所以没跟着做它的 Cool 语言的 compiler，主要原因也是因为它用了 <a href="http://dinosaur.compilertools.net/" target="_blank" rel="external">Lex 和 Bison</a> 工具，而我想要的是完全手写的编译器，不借助任何自动工具的编译器，哪怕只是前端部分，写个简单的解释器也好。就在我苦苦寻找一些帮助的时候我发现了 <a href="https://github.com/rswier/c4" target="_blank" rel="external">C4</a>，一个非常精致的 C 语言子集编译器，或者叫他解释器，因为毕竟没有生成 Object Binary，不过这并不影响它的魅力，因为它只用了500多行代码，4个函数（名字的由来），就完成了 C 解释器，关键是它竟然能自举，即自己编译自己！这完全颠覆了我对编译器成千上万行代码这一庞然大物的印象。粗略浏览了下源码，第一感觉是晦涩难懂！全文充斥着各种全局变量，“魔数”随处可见，几乎没有注释，换句话说就是完全不遵守编程范式，不过看着看着就兴奋了，这简直就是为我量身定制的，或者说这就是为 Compilers 这门课定制的，一些看上去不知所云的代码正是课中所讲的一些方法论的完美体现！所以就义无反顾得踏上了破解 C4 奥秘的道路，这些会在之后的专门介绍 C4 的文章里详细展开。</p>
@@ -389,10 +389,10 @@
 </ul>
 </li>
 </ul>
-<p>如果你之前本科阶段的编译原理好好听了，看到这些概念是不是满满的熟悉感！我这里列出了最重要的章节，以及每章最核心的概念，所以这个列表基本囊括了主流编译器的所有核心概念，有了基本原理在心中，以后看编译器代码只要对上相应模块就不至于不知所措了。</p>
+<p>如果你编译原理学得不错，看到这些是不是满满的熟悉感！我这里列出了最重要的章节，以及每章最核心的概念，所以这个列表基本囊括了主流编译器的所有核心概念，有了基本原理在心中，以后看编译器代码只要对上相应模块就不至于不知所措了。</p>
 <h2 id="下一步"><a href="#下一步" class="headerlink" title="下一步"></a>下一步</h2><p>我写这篇文章的时候已经距离上完这门课挺长时间了，中间一段时间一直忙于各种乱七八糟的事没能记录下心路历程，这篇文章就当是开个头吧，后续的 Compilers 系列文章应该还有不少，因为这段时间我看又了不少东西，慢慢写吧，紧接着的应该是 C4 系列，然后是 LLVM 系列，再然后是 Lua虚拟机或者其他语言的虚拟机吧。不过我能挤出来的时间可能越来越少了，因为我的硕士方向不是PL，当然我也没想过要把PL当自己的方向，到目前为止只是想了却之前的一个心愿，不过距离目标实现已经很近了！</p>
 <p>再多扯几句，PL这个坑确实太大了，当然每个方向的坑都不会小，就看你自己想走多远了，是只想重复前人的工作？还是想站在这个方向的最前沿？就我而言，我现在只敢说自己刚入了 Compilers 的门（都不敢说是 PL 的门），因为见识到一些真正的大牛，才知道自己在这个领域的渺小，比如知乎上比较活跃的 <a href="https://www.zhihu.com/people/rednaxelafx" target="_blank" rel="external">RednaxelaFX</a>，<a href="https://www.zhihu.com/people/rainoftime" target="_blank" rel="external">姚培森</a>，<a href="https://www.zhihu.com/people/lan-se-52-30" target="_blank" rel="external">蓝色</a>，<a href="https://www.zhihu.com/people/shaocheng_cafe2code" target="_blank" rel="external">邵成</a> 等等，每次看他们的回答，都能发现自己还差得远，不管是工程界里的 Compiler，还是理论学术界的 Programming Language Theory，都有太多太多的东西要学。所以，努力吧！</p>
-<p>好了，就写这么多吧，这是 Standford Compilers （上），当然还有（下），下篇是我上这门课的全课程笔记，用英文记录，以防一些专有名词在翻译的时候出现歧义，或者没法翻译，格式可能不太齐整，语句可能有些不太通顺，不过基本记录了整门课程的全部要点，主要是是让我自己以后遇到一些个概念时可以快速看笔记回想起来。</p>
+<p>好了，就写这么多吧，这是 Stanford Compilers （上），当然还有（下），下篇是我上这门课的全课程笔记，用英文记录，以防一些专有名词在翻译的时候出现歧义，或者没法翻译，格式可能不太齐整，语句可能有些不太通顺，不过基本记录了整门课程的全部要点，主要是是让我自己以后遇到一些个概念时可以快速看笔记回想起来。</p>
 
       
     </div>
@@ -424,6 +424,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/13/Stanford-Compilers-Notes/" rel="prev" title="Stanford Compilers （下）">
+                Stanford Compilers （下） <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -498,7 +502,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -677,9 +681,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'shinexu';
-      var disqus_identifier = '2016/05/12/standford-compilers/';
-      var disqus_title = 'Standford Compilers （上）';
-      var disqus_url = 'http://www.shinexu.com/2016/05/12/standford-compilers/';
+      var disqus_identifier = '2016/05/12/Stanford-Compilers-Thoughts/';
+      var disqus_title = 'Stanford Compilers （上）';
+      var disqus_url = 'http://www.shinexu.com/2016/05/12/Stanford-Compilers-Thoughts/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
