@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="Uncharted">
 <meta property="og:description" content="前言关于个人博客搭建，加上这次，算是折腾三次了，从最一开始的Wordpress，到Ghost，再到这次的Hexo，也算是小小见证了个人博客解决方案的的变迁历程，个人博客从程序员专属，发展到了如今能带给非专业人员极速轻量的搭建体验，技术从原来的SSHA，LAMP发展到了Node.js + NoSQL，部署从原来的需要前后端通吃，渐渐转成傻瓜式发布，而我对于新兴技术的兴奋度，却渐渐降低。
 关于个人博客">
-<meta property="og:updated_time" content="2016-05-13T08:48:13.000Z">
+<meta property="og:updated_time" content="2016-05-15T06:13:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从Ghost到Hexo">
 <meta name="twitter:description" content="前言关于个人博客搭建，加上这次，算是折腾三次了，从最一开始的Wordpress，到Ghost，再到这次的Hexo，也算是小小见证了个人博客解决方案的的变迁历程，个人博客从程序员专属，发展到了如今能带给非专业人员极速轻量的搭建体验，技术从原来的SSHA，LAMP发展到了Node.js + NoSQL，部署从原来的需要前后端通吃，渐渐转成傻瓜式发布，而我对于新兴技术的兴奋度，却渐渐降低。
@@ -321,10 +321,11 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于个人博客搭建，加上这次，算是折腾三次了，从最一开始的<a href="https://zh-cn.wordpress.com/" target="_blank" rel="external">Wordpress</a>，到<a href="https://zh-cn.wordpress.com/" target="_blank" rel="external">Ghost</a>，再到这次的<a href="https://zh-cn.wordpress.com/" target="_blank" rel="external">Hexo</a>，也算是小小见证了个人博客解决方案的的变迁历程，个人博客从程序员专属，发展到了如今能带给非专业人员极速轻量的搭建体验，技术从原来的SSHA，LAMP发展到了Node.js + NoSQL，部署从原来的需要前后端通吃，渐渐转成傻瓜式发布，而我对于新兴技术的兴奋度，却渐渐降低。</p>
-<p>关于个人博客搭建解决方案的<a href="https://www.zhihu.com/question/21981094" target="_blank" rel="external">讨论</a>实在太多了，技术好一点的，喜欢一切尽在掌控，对高度捆绑式博客框架嗤之以鼻，技术不好的，以及非专业人员，则更青睐没那么多技术细节，简单易上手的方案。一开始自己还乐此不疲得参与进去，跟人争得面红耳赤，总是把自己的喜好吹得天花乱坠，把其他的贬得一文不值，现在想想也是脸红得不行：）。虽然我是个不折腾不舒服星人，但是享受的也仅仅是折腾的过程，折腾完了却总提不起兴致好好写一篇像样的博客，总觉得自己懂得太少，不好意思把一些东西分享出来，怕真正的高手笑话，这导致之前的博客搭起来后就搁置起灰。</p>
+<p>关于个人博客搭建解决方案的<a href="https://www.zhihu.com/question/21981094" target="_blank" rel="external">讨论</a>实在太多了，技术好一点的，喜欢一切尽在掌控，对高度捆绑式博客框架嗤之以鼻，技术不好的，以及非专业人员，则更青睐没那么多技术细节，简单易上手的方案。一开始自己还乐此不疲得参与进去，跟人争得面红耳赤，总是把自己的喜好吹得天花乱坠，把其他的贬得一文不值，现在想想也是脸红得不行：）。虽然我是个不折腾不舒服星人，但是享受的也仅仅是折腾的过程，折腾完了却总提不起兴致好好写一篇像样的博客，这导致之前的博客搭起来后就搁置起灰。</p>
 <a id="more"></a>
 <p>所以作为这次（希望是最后一次）博客迁移的第一篇文章，就写写Ghost和Hexo吧，而Wordpress因为时间太过遥远而且不符合当今极度追求轻量简便的政治正确就跳过了。这篇文章不是技术博客，不会探讨Ghost和Hexo的实现，用到的后台管理技术，从模板到静态文件的渲染方式等，这些在他们的官网上都有非常详细开发文档，再加上自己也没有仔细扒过源码，所以就不献丑了。这篇文章最主要说说我为什么要从Ghost迁到Hexo，以及用精简的步骤记录下部署过程方便查阅。</p>
 <p>当然原来的<a href="http://115.29.36.82/" target="_blank" rel="external">Ghost博客</a>依然还在云服务器上跑着。</p>
+<p>还有，这次我给我的博客起名为 Uncharted，它来自<a href="http://www.naughtydog.com/" target="_blank" rel="external">顽皮狗</a>发布在PlayStation上的系列游戏，它的中文名你肯定听过——神秘海域。</p>
 <h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>先来说Hexo，因为这是个很轻量级的博客框架，我在折腾完Ghost后，博客很长一段时间就闲置了，现在想想并不是忙到没时间写博客，而是没水平把一些想法组织成一篇通体流畅的精致文章，所以确实需要常写常练常看，这篇小白文章就当热手了，后面准备把 Compiler 和 DS &amp; Algorithms 的一些技术文章写好。</p>
 <p>说会Hexo，先说下我知道Jekyll/Hexo还是在Ghost之前，但是当时正值折腾病高峰期，就没有重视这类静态托管类型的博客框架。后来自己通过搭Ghost把前后端都走了一遍后，反而对自己的服务器产生一种不信任感，难以形容这种感觉，再加上Ghost的线上Markdown支持不是特别好，所以就萌生了托管到Github的想法。</p>
 <p>Hexo的安装与Ghost差不多，因为都是基于Node.js的，所以直接用npm安装：</p>
