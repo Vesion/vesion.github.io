@@ -84,25 +84,24 @@
 
 
 
-<meta name="description" content="前言今天来聊聊Vim)。
+<meta name="description" content="今天来聊聊Vim。
 关于Vim，属于“世界上最好的IDE/Editor”话题，已经被争论了太长时间了，属于三大程序员引战话题之一，另外两个是“世界上最好的编程语言”和“括号到底要不要换行”，当然，争来争去都凭各自喜好，也是程序员的一大乐趣所在。
-这不是一篇教你怎么用Vim的技术文章，因为这样的文章或书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥要用Vim。
-从IDE到Edit">
+这篇文章的目的不是Vim教学，因为这样的文章和书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥最后选择了Vim。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈Vim">
 <meta property="og:url" content="http://www.shinexu.com/2016/05/14/vim-headfirst/index.html">
 <meta property="og:site_name" content="Uncharted">
-<meta property="og:description" content="前言今天来聊聊Vim)。
+<meta property="og:description" content="今天来聊聊Vim。
 关于Vim，属于“世界上最好的IDE/Editor”话题，已经被争论了太长时间了，属于三大程序员引战话题之一，另外两个是“世界上最好的编程语言”和“括号到底要不要换行”，当然，争来争去都凭各自喜好，也是程序员的一大乐趣所在。
-这不是一篇教你怎么用Vim的技术文章，因为这样的文章或书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥要用Vim。
-从IDE到Edit">
-<meta property="og:updated_time" content="2016-05-14T17:37:00.000Z">
+这篇文章的目的不是Vim教学，因为这样的文章和书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥最后选择了Vim。">
+<meta property="og:image" content="http://www.shinexu.com/images/MacVim-ScreenShot.png">
+<meta property="og:updated_time" content="2016-05-15T05:48:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅谈Vim">
-<meta name="twitter:description" content="前言今天来聊聊Vim)。
+<meta name="twitter:description" content="今天来聊聊Vim。
 关于Vim，属于“世界上最好的IDE/Editor”话题，已经被争论了太长时间了，属于三大程序员引战话题之一，另外两个是“世界上最好的编程语言”和“括号到底要不要换行”，当然，争来争去都凭各自喜好，也是程序员的一大乐趣所在。
-这不是一篇教你怎么用Vim的技术文章，因为这样的文章或书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥要用Vim。
-从IDE到Edit">
+这篇文章的目的不是Vim教学，因为这样的文章和书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥最后选择了Vim。">
+<meta name="twitter:image" content="http://www.shinexu.com/images/MacVim-ScreenShot.png">
 
 
 
@@ -326,29 +325,32 @@
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>今天来聊聊<a href="https://en.wikipedia.org/wiki/Vim_(text_editor" target="_blank" rel="external">Vim</a>)。</p>
+        <p>今天来聊聊<a href="http://www.vim.org/" target="_blank" rel="external">Vim</a>。</p>
 <p>关于Vim，属于“世界上最好的IDE/Editor”话题，已经被争论了太长时间了，属于三大程序员引战话题之一，另外两个是“世界上最好的编程语言”和“括号到底要不要换行”，当然，争来争去都凭各自喜好，也是程序员的一大乐趣所在。</p>
-<p>这不是一篇教你怎么用Vim的技术文章，因为这样的文章或书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥要用Vim。</p>
-<h1 id="从IDE到Editor"><a href="#从IDE到Editor" class="headerlink" title="从IDE到Editor"></a>从IDE到Editor</h1><p><a href="https://en.wikipedia.org/wiki/IDE" target="_blank" rel="external">IDE</a>，几乎是当代所有编程初学者的入门工具，作为商业级、重量级应用，集Editor, Compiler, Linker, Profiler等等功能于一身，隐藏了从代码到目标文件的诸多细节，大大降低了编程的入门门槛，而其中 <a href="https://www.visualstudio.com/" target="_blank" rel="external">Visual Studio</a> 系和 <a href="https://www.jetbrains.com/" target="_blank" rel="external">Jetbrains</a> 系这样的翘楚，更是为我们的入门之路带来了愉悦的编程体验，试想若是让初学者面对一个空荡荡的Notepad、一堆复杂的Makefile依赖和满屏的Link错误，估计早就被吓跑了吧。</p>
-<p>但是，用惯了IDE的你，有没有在某个时候，为就想写个小Demo或者写道ACM题，却要等个好几秒甚至几十秒的IDE启动时间而不爽，反正我是经常有的，特别是之前电脑还没有固态硬盘的年代，灵感突然而至的时候，IDE的启动时间能让我抓狂，于是我就义无反顾地踏上了“我苦苦地寻找，属于我的编辑器在哪里”之路。</p>
-<h2 id="Notepad"><a href="#Notepad" class="headerlink" title="Notepad"></a>Notepad</h2><p>编辑器（Editor），是编程环境中与我们关系最为密切，交互最为频繁的一部分，因为编程嘛，就是把我们的想法写到编辑器里的这么一个过程。而说到Editor，第一时间想到的，也是最熟悉的应该是Windows下的Notepad，最为简单朴素，零学习成本，不过你若是想把它拿来写代码，那就跟在白板上手写代码没多大区别，我们缺少了啥？我们缺少了色彩高亮、自动补全、代码片段生成这些这些在IDE里已经习以为常的编辑功能，更别说智能错误提示、头文件检测、代码重构、定义预览和跳转等等强劲功能了，没有这些功能的强力辅助，你会发现几乎不能一次性写出能编译成功的代码，所以你会觉得拿Notepad来写代码真是反人类！</p>
-<h2 id="Notepad-1"><a href="#Notepad-1" class="headerlink" title="Notepad++"></a>Notepad++</h2><p>当然，肯定不是你一个人觉得蛋疼，虽然我们的目标是轻量级编程，不过Notepad这实在是轻量过头了，所以我发现了 <a href="https://notepad-plus-plus.org/" target="_blank" rel="external">Notepad++</a>。你是不是想到了 C 和 C++，一般名字后面有++的，都会以为是在之前基础上的增强版，不过Notepad++跟Notepad却没有太大的关系，它并不是微软官方发布的商业软件，而是一款由独立作者写出来的面对Windows平台的开源软件！Notepad++面世后，着实引起了不小的反响，程序员们发现原来离开了IDE也能愉快得编程。而我接触到Notepad++时也是欣喜不已，就像得到了新玩具一样爱不释手，还记得当时在写一个网站项目，在我的安利下，项目组小伙伴们都麻溜得换上了Notepad++，当时还不喜欢看官方文档，所有feature基本都是靠自己摸索和别人炫耀，每知道一个新feature都开心得不行，各种代码高亮、文档树、自动补全、插件支持功能都相当好用，写代码本身反而不那么重要了：）</p>
-<h2 id="Sublime-Text-2"><a href="#Sublime-Text-2" class="headerlink" title="Sublime Text 2"></a>Sublime Text 2</h2><p>就在我Notepad++用得停不下来的时候，一个小伙伴两眼放光地向我炫耀了他的新发现——<a href="https://www.sublimetext.com/" target="_blank" rel="external">Sublime Text 2</a>，至今我都还记得看到那满屏的浅黑背景加上紫红色代码时的震惊感，原来编辑器也可以这么漂亮！Sublime是一款对我影响很大的编辑器，虽然现在我已经是一个资深Vim党，但是我的 <a href="http://macvim-dev.github.io/macvim/" target="_blank" rel="external">MacVim</a> 的主题配置还是Sublime默认的 <a href="https://www.sublimetext.com/" target="_blank" rel="external">Molokai</a>，并且所有的IDE主题设置都尽量往它靠拢。尽管没有贬低Notepad++的意思，不过Sublime在GUI上真是太有吸引力了，那一屏炫酷的黑色，搭配紫红色和天蓝色高亮，就两个字，性感！当然Sublime可不仅仅是高颜值，他的使用体验也是没话说。于是我就从Notepad++转到了Sublime，同样地，又是一阵子摸索和折腾，从控制台使用，到插件安装，再到自动调用编译器一键build，那时候最美好的体验就是秒开Sublime，噼里啪啦敲上一阵Python代码，然后let’s fly！</p>
-<h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim !"></a>Vim !</h2><p>就这样，Sublime陪伴了我一年多，直到一个雷电交加的夜晚，哦不，买了云服务器的那一天。那时候<a href="http://www.shinexu.com/2015/10/11/from-ghost-to-hexo/">正在折腾Ghost</a>，经常ssh到云服务器上折腾东西，而在没有了GUI后，再炫酷的编辑器都用不了了，只能面对漆黑的console，这时候，别说写代码了，就是改个小文本都成了大问题。不过，我必然不是第一个需要在终端里编辑文件写代码的人啊，这种需求应该是在开天辟地计算机被造出来之后不久就存在的，那时候别说编辑器了，连有GUI的操作系统都还没出来呢，那时候的上古大牛们都是怎么办的呢？当然，这种“小问题”可难不住写出UNIX的大神们，对他们来说写个编辑器还不是分分钟的事，于是就有了 <a href="https://en.wikipedia.org/wiki/Vi" target="_blank" rel="external">vi</a>。</p>
-<p>vi的诞生是20世纪70年代中期，经过十多年的发展，一个经典之作 <a href="https://en.wikipedia.org/wiki/Vim_(text_editor" target="_blank" rel="external">Vim (Vi IMproved)</a>) 诞生了（当然说到Vim肯定会提到它唯一的强力竞争者——<a href="https://en.wikipedia.org/wiki/Emacs" target="_blank" rel="external">Emacs</a>，不过这俩之间的恩怨情仇太多了，而且我没有深入使用过Emacs，这里就不比较它们啦，各位如果感兴趣可以搜到很多关于它们之间的争论，嗯，无休止的争论，哈哈）。</p>
+<p>这篇文章的目的不是Vim教学，因为这样的文章和书实在太多啦，这是一篇我用Editor的心路历程，然后说说为啥最后选择了Vim。</p>
+<a id="more"></a>
+<h1 id="从IDE到Editor"><a href="#从IDE到Editor" class="headerlink" title="从IDE到Editor"></a>从IDE到Editor</h1><p><a href="https://en.wikipedia.org/wiki/IDE" target="_blank" rel="external">IDE</a>，几乎是当代所有编程初学者的入门工具，作为商业级应用，是集Editor, Compiler, Linker, Profiler等等功能于一身的庞大工具链，隐藏了从代码到目标文件的诸多细节，大大降低了编程的入门门槛，而其中 <a href="https://www.visualstudio.com/" target="_blank" rel="external">Visual Studio</a> 系和 <a href="https://www.jetbrains.com/" target="_blank" rel="external">Jetbrains</a> 系这样的翘楚，更是为我们的入门之路带来了愉悦的编程体验，试想若是让初学者面对一个空荡荡的Notepad、一堆复杂的Makefile依赖和满屏的Link错误，估计早就吓跑了吧。</p>
+<p>但是，用惯了IDE的你，有没有在某个时候，就想写个小Demo或者写道ACM题，却要等个好几秒甚至几十秒的IDE启动时间，顿时兴致大减，反正我是经常有的，特别是之前电脑还没有固态硬盘的时候，灵感突然而至，IDE的启动时间能让我抓狂。于是我就义无反顾地踏上了“苦苦地寻找，属于我的编辑器在哪里”的道路。</p>
+<h2 id="Notepad"><a href="#Notepad" class="headerlink" title="Notepad"></a>Notepad</h2><p>编辑器（Editor），是编程环境中与我们关系最为密切，交互最为频繁的一部分，因为编程嘛，除了想就是写了。而说到Editor，我第一时间想到的，也是最熟悉的应该是Windows下的Notepad，最为简单朴素，零学习成本，不过你若是想把它拿来写代码，那就跟在白板上手写代码没多大区别，我们缺少了啥？我们缺少了色彩高亮、自动补全、代码片段生成这些这些在IDE里已经习以为常的编辑功能，更别说智能错误提示、代码重构、定义预览和跳转等等强劲功能了，没有这些功能的强力辅助，你会发现一次性写出能编译成功的代码相当困难，所以你会觉得拿Notepad来写代码真是反人类！当然，肯定不是你一个人觉得蛋疼，虽然我们的目标是轻量级编程，不过Notepad这实在是轻量过头了，所以我找到了 <a href="https://notepad-plus-plus.org/" target="_blank" rel="external">Notepad++</a>。</p>
+<h2 id="Notepad-1"><a href="#Notepad-1" class="headerlink" title="Notepad++"></a>Notepad++</h2><p>光看它的名字，你是不是想到了 C 和 C++，名字后面有++的，一般都会是在之前基础上的增强版，不过Notepad++跟Notepad却没有太大的关系，它并不是微软官方发布的商业软件，而是一款由独立作者写出来的面对Windows平台的开源软件！Notepad++面世后，着实引起了不小的反响，程序员们发现原来编辑器也能这么强大。我接触到Notepad++时也是欣喜不已，就像得到了新玩具一样爱不释手，还记得当时在写一个网站项目，在我的安利下，项目组小伙伴们都麻溜得换上了Notepad++，当时还不喜欢看官方文档，所有feature的掌握都是靠自己摸索和别人炫耀，每知道一个新feature都开心得不行，各种代码高亮、文档树、自动补全、插件支持功能都相当好用，写代码本身反而不那么重要了：）</p>
+<h2 id="Sublime-Text-2"><a href="#Sublime-Text-2" class="headerlink" title="Sublime Text 2"></a>Sublime Text 2</h2><p>就在我Notepad++用得停不下来的时候，一个小伙伴向我炫耀了他的新发现——<a href="https://www.sublimetext.com/" target="_blank" rel="external">Sublime Text 2</a>，至今我都还记得第一次看到那满屏的浅黑背景加上紫红色代码时的震惊感，原来编辑器也可以这么漂亮！Sublime是一款对我影响很大的编辑器，虽然现在我已经是一个资深Vim党，但是我 <a href="http://macvim-dev.github.io/macvim/" target="_blank" rel="external">MacVim</a> 的主题配置还是Sublime默认的 <a href="https://www.sublimetext.com/" target="_blank" rel="external">Molokai</a>，并且所有的IDE主题设置都尽量模仿它。没有贬低Notepad++的意思，不过Sublime在GUI上真是太有吸引力了，那一屏炫酷的黑色，搭配紫红色和天蓝色高亮，就两个字，性感！当然Sublime可不仅仅是高颜值，他的使用体验也是没话说，Notepad++有的它基本都有，除此之外，它的多光标操作、实时匹配替换等feature让我惊艳不已。于是我就从Notepad++转到了Sublime，同样地，又是一阵子摸索和折腾，从控制台使用，到插件安装，再到自动调用编译器一键build，那时候最美好的体验就是秒开Sublime，噼里啪啦敲上一阵Python代码，然后let’s fly！</p>
+<h2 id="Vim"><a href="#Vim" class="headerlink" title="Vim !"></a>Vim !</h2><p>就这样，Sublime陪伴了我一年多，直到一个雷电交加的夜晚，哦不，买了云服务器的那一天。我<a href="http://www.shinexu.com/2015/10/11/from-ghost-to-hexo/">开始搭Ghost</a>，经常ssh到云服务器上折腾，而在没有了GUI后，再炫酷的编辑器都用不了了，只能面对漆黑的console，这时候，别说写代码了，就是改个小文本都成了大问题。不过，我必然不是第一个需要在终端里编辑文件写代码的人啊，这种需求应该是在开天辟地计算机被造出来之后就存在的，那时候别说编辑器了，连有GUI的操作系统都还没出来呢，那时候的上古大牛们都是怎么办的呢？当然，这种“小问题”可难不住写出UNIX的大神们，对他们来说写个编辑器还不是分分钟的事，于是就有了 <a href="https://en.wikipedia.org/wiki/Vi" target="_blank" rel="external">vi</a>。</p>
+<p>vi的诞生是20世纪70年代中期，那时候的编辑器只求能有，不求好用，因此经过十多年的发展，一个经典之作 <a href="https://en.wikipedia.org/wiki/Vim_(text_editor" target="_blank" rel="external">Vim (Vi IMproved)</a>) 诞生了（当然说到Vim肯定会提到它唯一的强力竞争者——<a href="https://en.wikipedia.org/wiki/Emacs" target="_blank" rel="external">Emacs</a>，不过这俩之间的恩怨情仇太多了，而且我没有深入使用过Emacs，这里就不比较它们啦，各位如果感兴趣可以搜到很多关于它们之间的争论，嗯，无休止的争论，哈哈）。</p>
 <p>正如现在几乎没有初学者手写Makefile一样，也少有初学者一上来就用Vim的，可不是嘛，有个经典的笑话：</p>
 <ul>
 <li>问：“你第一次使用Vim的体验是什么样的？”</li>
 <li>答：“哦，我为了退出它，重启了电脑。”</li>
 </ul>
-<p>你看，对新手来说，Vim别说是使用了，连退出都费劲，所以，在各种神IDE和炫酷编辑器大行其道的当下，Vim还真是对新手不友好，但没办法啊，再不友好我也得学啊。谁知道这一学，从此就踏上了不归路。</p>
-<p>如果你现在问我哪个编辑器“易学好用”，我会说Sublime，因为就初学者上手而言，我用过的还没找到比它更亲民的了。而如果你问我哪个编辑器“值得学”，我会毫不犹豫地推荐Vim，对初学者来说，尽管这是个一打开完全不知所措的编辑器，是个需要记住键盘上几乎每一个按键的作用的编辑器，是个要自己写配置文件的编辑器，是个需要花很大力气和很长时间才能流畅使用的编辑器，但我还是要强烈推荐，因为，这是个一旦掌握就能“起飞”的编辑器！是的，真正的全键盘操作，扔掉鼠标编程就从Vim开始吧。</p>
-<p>好了，安利完了就来说说我是怎么学Vim的吧，首先，你需要一个环境，个人推荐Linux CentOS之类的没有GUI的操作系统，或者Mac和Windows上都有相应的<a href="http://www.vim.org/download.php" target="_blank" rel="external">Vim版本下载</a>，总之做好不用鼠标的准备，忘掉之前所有的编辑器开始上路吧。然后你需要一本入门书，个人推荐<a href="http://www.swaroopch.com/notes/vim/" target="_blank" rel="external">《A Byte of Vim》</a>，我就是看的这本书，篇幅很小，不到90页，所以可以慢慢看，一定要跟着书上的例子操作，尽管一开始会很慢，可能连怎么输入文本都会摸索一会，不过没关系，记错命令或按错键也是常事，不过一定要坚持完成每一个操作例子。可能你会对一些概念感到困惑，比如为啥要有 normal, visual, insertion mode，各个mode之间切换好麻烦，移动光标为什么是 h j k l，赋值粘贴怎么操作，怎么删除，怎么查找，怎么替换等等，一些在其他编辑器里都普遍适用的操作在Vim里几乎都失效了，还是那句话，忘掉之前所有的，就把Vim当一个崭新的编辑器来学，一开始只要照做就行，这个时候想一些软件设计上问题是没有意义的，因为你还没到那个阶段，先练出肌肉记忆再说。这里安利一个学Vim的人几乎都玩过的<a href="http://vim-adventures.com/" target="_blank" rel="external">小游戏</a>，网页端的，对训练熟练度还是很有帮助的。</p>
-<p>好了，如果你每天都练，每天都用的话，一到两个星期你就能基本不用其他编辑器了，这时候，你差不多搞清楚了每一种常用操作，一些通过简单组合就能完成巨大工作的神奇功能，以及一些之前可能从来没见过的文本对象操作。是的，你已经跨过了最难的一道坎，是时候开始揭开Vim的种种神秘面纱了。有些时候，学习过程就是这么奇妙，初学的时候百思不得其解的东西，在熟练使用后就这么自然而然地懂了，是的，为什么移动光标要用 h j k l 而不是上下左右，为什么一些操作要绑定到对应的按键上，为什么一些字母的大小写操作是相反方向，为什么要自己配置vimrc等等，这些问题相信你都已经知道答案了。</p>
-<p>是的，Vim的魅力开始悄悄发挥作用了，一些之前感到莫名其妙的设计会变得那么自然，仿佛编辑器天生就应该这样，至于鼠标，再也不需要了。不过，这也仅仅是会用Vim了而已，还远远没到会玩Vim的地步，Vim为什么如此受追捧（Emacs手动斜眼→_→），当然跟“自定义”有非常大的关系，一款好玩的游戏哪能少得了玩家的Mode，插件就是给你写Mode的，而 <a href="https://en.wikibooks.org/wiki/Learning_the_vi_Editor/Vim/VimL_Script_language" target="_blank" rel="external">vimL/vimscript</a> 正是你可以使用的编程语言（也可以使用其他扩展语言如Python）。可能你已经学会在vimrc里写一些简单的规则了，比如map和set之类的，然而这跟写Vim的插件还有不小的距离，不过别担心，自己写不了，那就用别人写的嘛，因为Vim的拥趸如此之多，你能想到的私人订制绝大部分都已经被实现啦，不信你可以到<a href="http://vimawesome.com/" target="_blank" rel="external">这里</a>看看，从异常强大的自动补全终极插件 <a href="https://github.com/Valloric/YouCompleteMe" target="_blank" rel="external">YCM</a> （这个插件强大但安装繁琐，具体可以看<a href="http://www.shinexu.com/2015/12/12/vim-ycm/">我之前的文章</a>） 到小小的<a href="https://github.com/Yggdroot/indentLine" target="_blank" rel="external">Tab提示符插件</a>，种类繁多，应有尽有，配合上插件管理工具 <a href="https://github.com/VundleVim/Vundle.vim" target="_blank" rel="external">Vundle</a>，把Vim改装成IDE也不是什么难事！</p>
-<p>我的vimrc在<a href="https://github.com/Vesion/Vim-Config" target="_blank" rel="external">这里</a>，我也会另写一篇文章来详细介绍它和各种神级插件：）</p>
-<p>Vim还有的魅力真是强大，我这近两年时间使用下来，这种感觉越来越深，每深入一步，都会有不一样的体验和收获，可能再过两年，使用心得又会不一样吧。</p>
-<p>附：<a href="https://en.wikipedia.org/wiki/Comparison_of_text_editors" target="_blank" rel="external">各编辑器之间对比图</a></p>
+<p>你看，对新手来说，Vim别说是使用了，连退出都费劲，所以，在各种神级IDE和炫酷编辑器大行其道的如今，Vim还真是对新手不友好，但没办法啊，再不友好我也得学啊。谁知道这一学，就踏上了不归路。</p>
+<p>如果你现在问我哪个编辑器“易学好用”，我会说Sublime，因为就初学者上手而言，我用过的没有比它更亲民的了。而如果你问我哪个编辑器“值得学”，我会毫不犹豫地推荐Vim，对初学者来说，尽管这是个一打开完全不知所措的编辑器，是个需要记住键盘上几乎每一个按键作用的编辑器，是个要自己学写配置文件（vimrc）的编辑器，是个需要花很大力气和很长时间才能流畅使用的编辑器，但我还是要强烈推荐，因为，这是个一旦掌握就能“起飞”的编辑器！是的，真正的全键盘操作，扔掉鼠标编程就从Vim开始吧：）</p>
+<p>好了，安利完了就来说说我是怎么学Vim的吧，首先，需要一个环境，我用的是 Linux CentOS 之类的没有GUI的操作系统和类UNIX操作系统Mac OS X，当然Windows上也有相应的<a href="http://www.vim.org/download.php" target="_blank" rel="external">Vim版本下载</a>，总之做好不用鼠标的准备开始上路。然后我需要一本入门书——<a href="http://www.swaroopch.com/notes/vim/" target="_blank" rel="external">《A Byte of Vim》</a>，篇幅很小，但五脏俱全，我看得很慢，但会仔仔细细得跟着书上的例子操作。一上来是痛苦的，因为我连怎么开始输入文本都摸索了一会，然后记错命令按错键是常事，并且对一些设计感到十分困惑，为啥要有 normal, visual, insertion mode，各个mode之间切换好麻烦，移动光标为什么是 h j k l，地球人都知道的复制ctrl+c和粘贴ctrl+v怎么不管用了，删除怎么是用d，那x呢，查找的ctrl+f呢，替换咋还要输这么一长串命令，这么多移动光标的方法用哪个，宏又是什么东西等等，真的是太多太多不适应了，一些在其他编辑器里都普遍适用的操作在Vim里几乎都失效了，于是Vim给了我比较不好的第一印象。但所幸我每天需要ssh到服务器上玩一会，这就不得不用Vim了，于是我把记住命令和按键的多少当做我对它的熟悉程度，每学一个新的我就不停地练，练成肌肉记忆。这里安利一个学Vim的人几乎都玩过的<a href="http://vim-adventures.com/" target="_blank" rel="external">小游戏</a>，对训练熟练度还是很有帮助。</p>
+<p>有些时候，学习过程就是这么奇妙，初学的时候百思不得其解的东西，在熟练使用后就这么自然而然地懂了。练了半个月，已经基本脱离了其他编辑器，有了“Vim思维”，我搞清楚了每一种常用操作，一些通过简单组合就能完成巨大工作的神奇功能，以及一些之前从来没见过的文本对象操作。是的，我已经跨过了最难的一道坎，是时候开始揭开Vim的种种神秘面纱了。至于为什么移动光标要用 h j k l 而不是上下左右，为什么一些操作要绑定到对应的按键上，为什么一些字母的大小写操作是相反方向，为什么要自己配置vimrc等等，这些问题都已经在使用的过程中找到了答案。</p>
+<p>Vim的魅力才开始发挥作用，一些之前感到莫名其妙的设计会变得那么自然，仿佛编辑器天生就应该这样。不过，这也仅仅是会用Vim了而已，还远远没到会玩Vim的地步，Vim为什么如此受追捧（Emacs手动斜眼→_→），当然跟“自定义”有非常大的关系，一款好玩的游戏哪能少得了玩家的Mode，插件就是Vim的Mode，而 <a href="https://en.wikibooks.org/wiki/Learning_the_vi_Editor/Vim/VimL_Script_language" target="_blank" rel="external">vimL/vimscript</a> 正是它的脚本语言（也可以使用其他扩展语言如Python）。</p>
+<p>这时候我已经学会在vimrc里写一些简单的配置，比如map和set之类的，然而这跟写Vim的插件还有不小的距离，不过别担心，自己写不了，那就用别人写的嘛，因为Vim的拥趸如此之多，你能想到的私人订制绝大部分都已经被实现啦，不信可以到<a href="http://vimawesome.com/" target="_blank" rel="external">这里</a>看看，从异常强大的自动补全终极插件 <a href="https://github.com/Valloric/YouCompleteMe" target="_blank" rel="external">YCM</a> （这个插件强大但安装繁琐，具体可以看<a href="http://www.shinexu.com/2015/12/12/vim-ycm/">我之前的文章</a>） 到小小的<a href="https://github.com/Yggdroot/indentLine" target="_blank" rel="external">Tab提示符插件</a>，种类繁多，应有尽有，配合上插件管理工具 <a href="https://github.com/VundleVim/Vundle.vim" target="_blank" rel="external">Vundle</a>，把Vim改装成IDE也不是什么难事！当然，如果实在手痒想自己写个插件，就多看看教程和别人写的插件源码，我就写了两个插件玩玩，一个是<a href="https://github.com/Vesion/vim-textobj-restline" target="_blank" rel="external">当前到行末对象</a>，另一个是<a href="https://github.com/Vesion/vim-textobj-surrounding" target="_blank" rel="external">全括号引号对象</a>。</p>
+<p>我的vimrc在<a href="https://github.com/Vesion/Vim-Config" target="_blank" rel="external">这里</a>，我也会另写一篇文章来详细介绍它和各种神级插件，这里先放张图——我的MacVim：</p>
+<p><img src="/images/MacVim-ScreenShot.png" alt="MacVim"></p>
+<p>所以只要你想折腾，Vim就有无限可能。用Vim快两年了，但现在我也不敢说我了解它所有的设计哲学和每一处使用细节，但每深入一步，都会有不一样的体验和收获，可能再过两年，使用心得又会不一样吧。</p>
+<p>附：<a href="https://en.wikipedia.org/wiki/Comparison_of_text_editors" target="_blank" rel="external">各编辑器之间对比</a></p>
 
       
     </div>
@@ -513,7 +515,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#从IDE到Editor"><span class="nav-number">2.</span> <span class="nav-text">从IDE到Editor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Notepad"><span class="nav-number">2.1.</span> <span class="nav-text">Notepad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Notepad-1"><span class="nav-number">2.2.</span> <span class="nav-text">Notepad++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sublime-Text-2"><span class="nav-number">2.3.</span> <span class="nav-text">Sublime Text 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim"><span class="nav-number">2.4.</span> <span class="nav-text">Vim !</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#从IDE到Editor"><span class="nav-number">1.</span> <span class="nav-text">从IDE到Editor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Notepad"><span class="nav-number">1.1.</span> <span class="nav-text">Notepad</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Notepad-1"><span class="nav-number">1.2.</span> <span class="nav-text">Notepad++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sublime-Text-2"><span class="nav-number">1.3.</span> <span class="nav-text">Sublime Text 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vim"><span class="nav-number">1.4.</span> <span class="nav-text">Vim !</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
