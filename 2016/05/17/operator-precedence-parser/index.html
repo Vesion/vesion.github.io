@@ -1,0 +1,725 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=PingFang SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT, Uncharted" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言在前面介绍 Stanford Compiler 的文章里提到之后会讲讲 c4 的实现，不过最近又开了坑，把LLVM的那篇 tutorial 看完了，也照着教程写了个带JIT的玩具语言 Kaleidoscope，一时沉迷于LLVM无法自拔（不过LLVM真是太好玩啦::&amp;gt;_&amp;lt;::），所以就一直没着手写，今天终于得空，就一点一点把坑都填上吧。
+不过在正式开始讲c4之前，让我们先做好准备，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Operator Precedence Parser">
+<meta property="og:url" content="http://www.shinexu.com/2016/05/17/operator-precedence-parser/index.html">
+<meta property="og:site_name" content="Uncharted">
+<meta property="og:description" content="前言在前面介绍 Stanford Compiler 的文章里提到之后会讲讲 c4 的实现，不过最近又开了坑，把LLVM的那篇 tutorial 看完了，也照着教程写了个带JIT的玩具语言 Kaleidoscope，一时沉迷于LLVM无法自拔（不过LLVM真是太好玩啦::&amp;gt;_&amp;lt;::），所以就一直没着手写，今天终于得空，就一点一点把坑都填上吧。
+不过在正式开始讲c4之前，让我们先做好准备，">
+<meta property="og:updated_time" content="2016-05-18T11:53:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Operator Precedence Parser">
+<meta name="twitter:description" content="前言在前面介绍 Stanford Compiler 的文章里提到之后会讲讲 c4 的实现，不过最近又开了坑，把LLVM的那篇 tutorial 看完了，也照着教程写了个带JIT的玩具语言 Kaleidoscope，一时沉迷于LLVM无法自拔（不过LLVM真是太好玩啦::&amp;gt;_&amp;lt;::），所以就一直没着手写，今天终于得空，就一点一点把坑都填上吧。
+不过在正式开始讲c4之前，让我们先做好准备，">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Operator Precedence Parser | Uncharted </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?432cbae24e55ea84ed21701ccfd6bbd4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Uncharted</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            时间线
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Operator Precedence Parser
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-17T22:38:33+08:00" content="2016-05-17">
+              2016-05-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Compilation/" itemprop="url" rel="index">
+                    <span itemprop="name">Compilation</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/17/operator-precedence-parser/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/17/operator-precedence-parser/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在前面介绍 <a href="http://www.shinexu.com/2016/05/12/Stanford-Compilers-Thoughts/">Stanford Compiler</a> 的文章里提到之后会讲讲 <a href="https://github.com/rswier/c4" target="_blank" rel="external">c4</a> 的实现，不过最近又开了坑，把LLVM的那篇 <a href="http://llvm.org/docs/tutorial/index.html" target="_blank" rel="external">tutorial</a> 看完了，也照着教程写了个带JIT的玩具语言 <a href="https://github.com/Vesion/Kaleidoscope" target="_blank" rel="external">Kaleidoscope</a>，一时沉迷于LLVM无法自拔（不过LLVM真是太好玩啦::&gt;_&lt;::），所以就一直没着手写，今天终于得空，就一点一点把坑都填上吧。</p>
+<p>不过在正式开始讲c4之前，让我们先做好准备，把一些核心概念和算法先讨论完，这样在后面我们讨论c4的时候思路才会比较流畅。所以，今天我们就先解决 <a href="https://en.wikipedia.org/wiki/Parsing" target="_blank" rel="external">parser</a> 中的一个非常有趣的问题，也是parser中比较难搞定的部分——运算符优先级（Operatpr Precedence）。</p>
+<a id="more"></a>
+<p>下面的内容分为两个部分，第一部分介绍问题的来源，歧义的产生；第二部分介绍如何通过运算符优先级来消除歧义，主要介绍两个在现代编译器中常见的算法——precedence climbing 和 top down operator precedence。</p>
+<h1 id="关于歧义"><a href="#关于歧义" class="headerlink" title="关于歧义"></a>关于歧义</h1><p>歧义（Ambiguity），大家肯定再熟悉不过了，因为不仅是在Compilation领域，日常生活中我们也经常遇到，比如高中语文修改病句里经常出现的“一百年的人造卫星”就是典型的歧义句，这句话造成解释不唯一的原因就是“人”到底是跟在前面与“的”一起作为这句话主语，还是跟在后面与“造”一起作为“卫星”的定语，而用我们Compilation的术语来说就是“一百年的”和“造卫星”哪个优先级更高，“人”就跟谁。</p>
+<p>有了这个直观的理解后，让我们来看看编程语言里的歧义，看看下面这个简单的算术表达式：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">2</span> * <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>这个式子的计算结果是多少？这还要说吗，幼儿园的小朋友都知道是7，但是计算机却不知道！你觉得这个这个式子没有歧义的原因，是我们小时候数学课本上告诉了我们<code>*</code>的优先级比<code>+</code>高，所以要先计算<code>2 * 3</code>，也就是说我们也不是天生就知道的，是数学课本告诉我们的。那计算机同样啊，编译器把我们写的代码翻译成计算机能懂的二进制码，其中非常重要的环节就是向计算机解释清楚一个表达式的运算步骤，这样才能使得计算机与我们的认知保持同步，才不会让表达式产生歧义。</p>
+<p>所以呢，我们在设计编程语言时，就要对创造的运算符（Operator）格外小心了。为了不让表达式产生歧义，我们需要严格规定好一个表达式的计算步骤，表达式才能产生唯一的结果。</p>
+<p>自然而然地，我们在数学中的四则运算里是怎么规定运算顺序的呢，用括号<code>(</code>  <code>)</code>！还是上面那个式子，更严格的表达是这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> + ( <span class="number">2</span> * <span class="number">3</span> )</span><br></pre></td></tr></table></figure>
+<p>这样就无论如何也不会产生歧义了，括号产生了一个子表达式，不管<code>*</code>和<code>+</code>谁的优先级更高，括号里和括号外是两个世界，<code>2</code>不会跑到括号外去。所以我们只要按照我们的意愿给表达式的每一步加上括号，无论多复杂的表达式都是可以没有歧义的。</p>
+<p>由于括号为我们带来了很大的方便，所以就有编程语言充分利用了它，对，你应该已经想到了——<a href="https://en.wikipedia.org/wiki/Lisp_\(programming_language\" target="_blank" rel="external">Lisp</a>)。Lisp这一古老的函数式语言浑身透着一股浓浓的学术和数学气息（Haskell手动斜眼→_→），跟现代的主流语言差别还是很大的，如果你读过 <a href="https://mitpress.mit.edu/sicp/" target="_blank" rel="external">SICP</a> 之类的教材，应该有了一些认识，当然没读过也没关系，我们这里并不讨论它。我们要说的是Lisp是怎么解决运算符带来的歧义的呢，答案是，由于函数式这一特性，Lisp用的是<a href="https://en.wikipedia.org/wiki/Polish_notation" target="_blank" rel="external">波兰式</a>，这是一种不方便人阅读，但是却非常方便计算机理解的运算表达方式，这就使得Lisp的世界中天然没有歧义存在：）对的，我们人类喜欢看到的式子是中缀表达式（如上面例子），在三种（前缀，中缀，后缀）表达式中，只有中缀会产生歧义。更多关于这方面的介绍可以看看<a href="http://interactivepython.org/runestone/static/pythonds/BasicDS/InfixPrefixandPostfixExpressions.html" target="_blank" rel="external">这篇</a>。</p>
+<p>到这里，我们看到了绝大部分现代编程语言里用的中缀表达式是会产生歧义的，那怎么解决呢，两种方法，一种是把中缀表达式转成前缀或后缀式，这在历史编译器中被大量用到；另一种方法是不做转化，通过其他方法处理优先级消除歧义。这两种方法的前提条件都是规定好运算符的优先级，我们主要讨论的就是第二种。</p>
+<h1 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h1><p>关于<a href="https://en.wikipedia.org/wiki/Operator-precedence_parser" target="_blank" rel="external">运算符优先级</a>的处理，是编译器语法分析（Syntax Analysis or Parsing）的一大重要环节，对于这方面的学术讨论颇多，我们今天只介绍其中两种，一种是在 <a href="http://clang.llvm.org/" target="_blank" rel="external">clang</a> 中用到的 precedence climbing 方法，另一种是 <a href="https://gcc.gnu.org/" target="_blank" rel="external">GCC</a> 中用到的 top down operator precedence 方法。为啥要选这两种方法呢，因为它们都是top-down parsing，实现简单，思路清晰。而且我们后面要讲的c4正是用的第二种方法！</p>
+<p>在开始介绍这两种算法之前，希望大家能对top-down parsing有些了解，如果你需要复习下，可以看看我之前写的<a href="http://www.shinexu.com/2016/04/06/LL-and-LR-Parsing/">这篇</a>。下面的介绍我们会结合具体例子来解释，并给出完整的Python代码，方便大家更直观得体验。</p>
+<h2 id="Precedence-Climbing"><a href="#Precedence-Climbing" class="headerlink" title="Precedence Climbing"></a>Precedence Climbing</h2><p>首先，我们先明确下我们要解决的问题，给出如下五种运算符：加<code>+</code>，减<code>-</code>，乘<code>*</code>，除<code>/</code>，幂<code>^</code>；由它们和数来组成中缀运算式子不能有歧义，即运算出唯一结果。</p>
+<h3 id="算法目标"><a href="#算法目标" class="headerlink" title="算法目标"></a>算法目标</h3><p>Precedence Climbing（爬山法）的思路是给每个运算符两个属性——优先级和结合性，然后在处理一个表达式的时候，把它分解成一组嵌套的子表达式（sub-expression），每个子表达式包含的运算符必须保证满足最低的优先级等级（precedence level），然后每个子表达式分别运算，按照优先级从高到低的顺序，后计算的子表达式用到前面子表达式的运算结果。</p>
+<p>所以我们规定这些运算符的优先级和结合性：</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th style="text-align:center">+</th>
+<th style="text-align:center">-</th>
+<th style="text-align:center">*</th>
+<th style="text-align:center">/</th>
+<th style="text-align:center">^</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Precedence</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">3</td>
+</tr>
+<tr>
+<td>Associativity</td>
+<td style="text-align:center">left</td>
+<td style="text-align:center">left</td>
+<td style="text-align:center">left</td>
+<td style="text-align:center">left</td>
+<td style="text-align:center">right</td>
+</tr>
+</tbody>
+</table>
+<p>下面举个具体的例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">2</span> ^ <span class="number">3</span> / <span class="number">4</span> - <span class="number">5</span></span><br><span class="line">|---------------|  prec_level <span class="number">1</span></span><br><span class="line">    |-------|      prec_level <span class="number">2</span></span><br><span class="line">    |---|          prec_level <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>这个例子中有3个子表达式，第一个子表达式的最低优先级等级（可以理解为该子表达式中最小的优先级）是1，第二个是2，第三个是3。所以第一个被计算的是优先级等级最高的子表达式<code>2 ^ 3</code>，结果是<code>8</code>；然后到了优先级等级为2的子表达式，注意此时该表达式中的<code>2 ^ 3</code>部分已经被计算完成，所以该表达式就是<code>8 / 4</code>，结果是<code>2</code>；最后一个表达式也是优先级等级最低的，同理，此时它变成了<code>1 + 2 - 5</code>，结果是<code>-2</code>，整个表达式运算完成。</p>
+<p>除了优先级需要考虑，二元运算符还得考虑结合性，例如下面这两个式子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">2</span> + <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> ^ <span class="number">2</span> ^ <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>第一个式子，按照我们规定的<code>+</code>的左结合性，它等于</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">1</span> + <span class="number">2</span>) + <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>第二个式子，按照我们规定的<code>^</code>的右结合性，它等于</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> ^ (<span class="number">2</span> ^ <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>因此，我们在实现爬山法的时候需要将优先级和结合性都处理好。</p>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><p>有了上面的描述，我们开始实现算法。</p>
+<p>首先，我们定义两个术语：</p>
+<ul>
+<li>Atoms，顾名思义，表达式的最小组成，不能再分解，只能是数或者括号表达式；</li>
+<li>Expressions，由二元操作符连接Atoms组成。</li>
+</ul>
+<p>Climbing算法最主要的步骤是对于每一层的子表达式，从第一个Atom开始，先得到该Atom的值，然后进入循环中，不过进入循环的条件是当前操作符的优先级不能比该层的最低优先级等级低，若不满足条件，直接退出；否则，进入循环，将该操作符的优先级加1，作为递归调用的最低优先级等级。看着可能比较绕，让我们先看下伪码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">eval_expr(prec_level):</span><br><span class="line">    result = eval_atom()</span><br><span class="line">    <span class="keyword">while</span> current token <span class="keyword">is</span> a binary operator <span class="keyword">and</span> its prec &gt;= prec_level:</span><br><span class="line">        prec, assoc = precedence <span class="keyword">and</span> associativity of current token</span><br><span class="line">    	<span class="keyword">if</span> associativity <span class="keyword">is</span> <span class="string">"left"</span>:</span><br><span class="line">            next_prec_level = prec + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        	next_prec_level = prec</span><br><span class="line">        rhs = eval_expr(next_prec_level)</span><br><span class="line">        result = eval_op(result, rhs)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>可以看出，该算法的核心思路就是每一次递归调用可以解决一层子表达式，该层的的运算符优先级最低为<code>prec_level</code>，所谓的Climbing，也是比较形象的名字，因为每深入一层递归，<code>prec_level</code>就递增，类似于爬山一样层层变高。</p>
+<h4 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h4><p>具体来看，算法会对每一个运算符进行一次递归调用，不过有的递归生命及其短暂——它们只会计算出atom的值然后直接返回了，并不会进入循环，这是正是因为后面的运算符优先级比自己小，所以这层子表达式到这里就结束了；而有的递归生命周期会比较长，这是因为后面的运算符优先级跟自己一样，或者比自己大，该层的子表达式也会相应较长。这里再举个具体的例子理解下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="number">2</span> + <span class="number">3</span> * <span class="number">4</span> / <span class="number">5</span> ^ <span class="number">2</span> * <span class="number">3</span> - <span class="number">1</span></span><br><span class="line">|-------                 ---|     prec_level <span class="number">1</span></span><br><span class="line">        |-------     ---|         prec_level <span class="number">2</span></span><br><span class="line">                |---|             prec_level <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>图中每一行代表一层子表达式。从<code>1</code>开始，由于<code>+</code>的<code>prec</code>为1，不比该层的<code>prec_level</code>小，所以进入第一层的循环，循环内的前两次递归调用都不会进入第二层循环（被第二层的<code>prec_level</code>限制了），一直到<code>3</code>的递归调用，发现<code>*</code>的<code>prec</code>为2，跟第二层的<code>prec_level</code>一样，所以可以进入第二层循环，一直到<code>5</code>，发现<code>^</code>的<code>prec</code>为3，不比第三层的<code>prec_level</code>小，进入第三层循环，这个过程就类似于入栈，后面的过程当然就是出栈了。每一层的循环都会实时计算出最新的左操作数，所以到最后的<code>1</code>时，被减数是已经被计算好了的。</p>
+<p>建议这里可以在纸上画出这个表达式的求值过程，模拟整个递归调用，加深理解。</p>
+<h4 id="结合性"><a href="#结合性" class="headerlink" title="结合性"></a>结合性</h4><p>说完了优先级，再来看看结合性，注意上面的代码中这一段：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> associativity is <span class="string">"left"</span>:</span><br><span class="line">	next_prec_level = prec + <span class="number">1</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	next_prec_level = prec</span><br></pre></td></tr></table></figure>
+<p>这边对递归调用的<code>prec_level</code>根据当前运算符的结合性进行了不同赋值，只有在左结合的时候才递增，为啥呢，这正是这个算法的巧妙之处，它将优先级和结合性一起考虑，使得代码异常简短。同样，我们还是从例子来看这一神来之笔。</p>
+<p>看下面这个式子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">7</span> + <span class="number">8</span> + <span class="number">9</span></span><br><span class="line">  ^</span><br></pre></td></tr></table></figure>
+<p>假设我们的算法正在处理第一个<code>+</code>，当前的<code>prec_level</code>是1，进入循环，因为<code>+</code>的结合性是<code>left</code>，执行<code>next_prec_level = prec + 1</code>，结果为<code>2</code>，进入递归：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">7</span> + <span class="number">8</span> + <span class="number">9</span></span><br><span class="line">      ^</span><br></pre></td></tr></table></figure>
+<p>当前的<code>prec_level</code>是从上一层的<code>next_prec_level</code>传过来的<code>2</code>，而<code>+</code>的<code>prec</code>是1，小于<code>prec_level</code>，所以不会进入第二层循环直接退出，又回到第一层的<code>result = compute operator(result, rhs)</code>这句话，其中<code>rhs</code>正是从第二层直接返回的<code>8</code>，结果就显而易见了，<code>8</code>参与左边的<code>+</code>的计算。这个式子的运算过程就是这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">7</span> + <span class="number">8</span>) + <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>相反，对于<code>^</code>操作符：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">7</span> ^ <span class="number">8</span> ^ <span class="number">9</span></span><br></pre></td></tr></table></figure>
+<p>同样按照上面的步骤考虑，你认为<code>8</code>参与左边的<code>^</code>计算还是右边呢，当然我们不希望与左边结合，因为数学中的幂运算是右结合的。验证下看看是不是呢，第一层的<code>prec_level</code>是1，当进入第二层的时候，<code>prec_level</code>并没有变大（即没有变为<code>3+1=4</code>），这就使得进入了第二层循环而发现了<code>9</code>，于是<code>8</code>就与<code>9</code>参与了第二层的运算，这个式子的运算过程是这样：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">7</span> ^ (<span class="number">8</span> ^ <span class="number">9</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><p>为了方便大家能自己动手操作下整个算法的流程，我写好了<a href="https://github.com/Vesion/Operator-Precedence" target="_blank" rel="external">完整的Python代码在这里</a>，大家可以下载下来看看我们的Climbing算法实际是怎么工作的，如果你在以后写parser的时候需要快速处理运算符的优先级，也可以作为不错的参考：）</p>
+<h2 id="Top-down-Operator-Precedence"><a href="#Top-down-Operator-Precedence" class="headerlink" title="Top-down Operator Precedence"></a>Top-down Operator Precedence</h2><p>TBC</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/14/vim-talking/" rel="next" title="浅谈Vim">
+                <i class="fa fa-chevron-left"></i> 浅谈Vim
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Shine Xu" />
+          <p class="site-author-name" itemprop="name">Shine Xu</p>
+          <p class="site-description motion-element" itemprop="description">Make my life</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Vesion" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://cn.linkedin.com/in/xiang-xu-a18807a2" target="_blank" title="Linkedin">
+                  
+                    <i class="fa fa-fw fa-linkedin-square"></i>
+                  
+                  Linkedin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于歧义"><span class="nav-number">2.</span> <span class="nav-text">关于歧义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运算符优先级"><span class="nav-number">3.</span> <span class="nav-text">运算符优先级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Precedence-Climbing"><span class="nav-number">3.1.</span> <span class="nav-text">Precedence Climbing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法目标"><span class="nav-number">3.1.1.</span> <span class="nav-text">算法目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法实现"><span class="nav-number">3.1.2.</span> <span class="nav-text">算法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优先级"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结合性"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">结合性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo"><span class="nav-number">3.1.3.</span> <span class="nav-text">Demo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Top-down-Operator-Precedence"><span class="nav-number">3.2.</span> <span class="nav-text">Top-down Operator Precedence</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shine Xu</span>
+</div>
+
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'shinexu';
+      var disqus_identifier = '2016/05/17/operator-precedence-parser/';
+      var disqus_title = 'Operator Precedence Parser';
+      var disqus_url = 'http://www.shinexu.com/2016/05/17/operator-precedence-parser/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
