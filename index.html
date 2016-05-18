@@ -253,8 +253,130 @@
             
               
                 
-                <a class="post-title-link" href="/2016/05/17/operator-precedence-parser/" itemprop="url">
-                  Operator Precedence Parser
+                <a class="post-title-link" href="/2016/05/18/operator-precedence-parser-2/" itemprop="url">
+                  Operator Precedence Parser（下）—— TDOP
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-18T21:27:14+08:00" content="2016-05-18">
+              2016-05-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Compilation/" itemprop="url" rel="index">
+                    <span itemprop="name">Compilation</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/18/operator-precedence-parser-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/18/operator-precedence-parser-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在<a href="http://www.shinexu.com/2016/05/17/operator-precedence-parser-1/">上篇</a>中，我们详细讨论了一种Operator Precedence Parser算法——precedence climbing（爬山法），相信大家已经掌握了这一算法的精髓，其最关键的就是将表达式按照最低优先级等级分层，从而在递归调用中一层一层计算每个子表达式的结果。</p>
+<p>这第二篇中，我们将要讨论第二种处理中缀表达式运算符优先级的parser算法——top-down operator precedence（TDOP）。</p>
+<h2 id="Top-down-Operator-Precedence"><a href="#Top-down-Operator-Precedence" class="headerlink" title="Top-down Operator Precedence"></a>Top-down Operator Precedence</h2><p>相比于上篇中的爬山法，TDOP算法年龄更大，它被广泛讨论是因为它的雏形出现在了早期的GCC中，后来被 <a href="https://en.wikipedia.org/wiki/Vaughan_Pratt" target="_blank" rel="external">Pratt</a> 改进，所以该算法也被称为 <a href="https://en.wikipedia.org/wiki/Pratt_parser" target="_blank" rel="external">Pratt Parser</a> 算法。而近年这一算法又被 <a href="https://en.wikipedia.org/wiki/Douglas_Crockford" target="_blank" rel="external">Crockford</a> 拿出来运用到了 <a href="http://www.jslint.com/" target="_blank" rel="external">JSLint</a> 当中。可见该算法不管是在历史上还是在当今都有不小的影响力，下面就让我们来看看它有何不俗之处吧。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/17/operator-precedence-parser-1/" itemprop="url">
+                  Operator Precedence Parser（上）—— Climbing
                 </a>
               
             
@@ -297,8 +419,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/05/17/operator-precedence-parser/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/17/operator-precedence-parser/" itemprop="commentsCount"></span>
+                <a href="/2016/05/17/operator-precedence-parser-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/05/17/operator-precedence-parser-1/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -325,7 +447,7 @@
           <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在前面介绍 <a href="http://www.shinexu.com/2016/05/12/Stanford-Compilers-Thoughts/">Stanford Compiler</a> 的文章里提到之后会讲讲 <a href="https://github.com/rswier/c4">c4</a> 的实现，不过最近又开了坑，把LLVM的那篇 <a href="http://llvm.org/docs/tutorial/index.html">tutorial</a> 看完了，也照着教程写了个带JIT的玩具语言 <a href="https://github.com/Vesion/Kaleidoscope">Kaleidoscope</a>，一时沉迷于LLVM无法自拔（不过LLVM真是太好玩啦::&gt;_&lt;::），所以就一直没着手写，今天终于得空，就一点一点把坑都填上吧。</p>
 <p>不过在正式开始讲c4之前，让我们先做好准备，把一些核心概念和算法先讨论完，这样在后面我们讨论c4的时候思路才会比较流畅。所以，今天我们就先解决 <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> 中的一个非常有趣的问题，也是parser中比较难搞定的部分——运算符优先级（Operatpr Precedence）。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/05/17/operator-precedence-parser/" rel="contents">
+            <a class="btn" href="/2016/05/17/operator-precedence-parser-1/" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1135,7 +1257,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
